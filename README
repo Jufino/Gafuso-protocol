@@ -1,8 +1,15 @@
 build protocol
-	$make
+
+	$ make
 run
-	$./protocol
+
+	$ ./protocol
+
 if you can test serial protocol
-	$make test_serial
+
+build
+
+	$ make test_serial
+
 run
-	$./test_serial
+	$ ./test_serial
