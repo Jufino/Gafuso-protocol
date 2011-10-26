@@ -1,3 +1,8 @@
-
-
-Just another simple protocol.
+build protocol
+	$make
+run
+	$./protocol
+if you can test serial protocol
+	$make test_serial
+run
+	$./test_serial
