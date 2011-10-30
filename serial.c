@@ -4,6 +4,7 @@
 #include <termios.h> // POSIX terminal control definitionss
 #include <time.h>   // time calls
 #include <errno.h>
+#include <stdio.h>
 //--------------------------------------------------------
 //otvara seriovy port
 //--------------------------------------------------------
@@ -19,15 +20,19 @@ int open_serial(const char *port, speed_t speed) {
     {
         struct termios my_termios;
         tcgetattr(fd, &my_termios);
-
-        my_termios.c_cflag = 0x000018b2;
-        my_termios.c_oflag = 0;
-        my_termios.c_iflag = 0x00000406;
-        my_termios.c_lflag = 0x00008a30;
-        my_termios.c_line = 0;
-
-        tcsetattr(fd, TCSANOW, &my_termios);
-    } // end if
+	//nastavenie portu
+    	cfsetispeed(&my_termios, speed);
+    	cfsetospeed(&my_termios, speed);
+	my_termios.c_cflag |= (CLOCAL | CREAD);
+	my_termios.c_cflag &= ~PARENB;
+	my_termios.c_cflag &= ~CSTOPB;
+	my_termios.c_cflag &= ~CSIZE;
+	my_termios.c_cflag |= CS8;
+	my_termios.c_lflag &= ~(ICANON | ECHO | ECHOE | ISIG);
+	my_termios.c_iflag &= ~(IXON | IXOFF | IXANY);
+	//-----------------------------------
+	tcsetattr(fd, TCSANOW, &my_termios);
+    }
     return fd;
 }
 void close_serial(int port){
