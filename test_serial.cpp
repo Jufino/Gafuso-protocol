@@ -5,7 +5,8 @@
 
 using namespace std;
 #define char_for_array_serial 10
-#include "serial.c";
+#include "libprotocol.c";
+#include "libserial.c";
 //--------------------------------------------
 
 int main(void)
