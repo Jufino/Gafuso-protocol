@@ -16,9 +16,10 @@ int main(void)
   printf("Serial port open - /dev/ttyO2\n");
 //-----------------------------------------------------------
 while(1){
-//  sprintf(prijemx[0],"%s","data");
-//  sprintf(prijemx[1],"%s","100");  
-//  send_data_serial(prijemx,2);
+	char prijemx[2][10];
+	  sprintf(prijemx[0],"%s","data");
+	sprintf(prijemx[1],"%s","100");  
+	send_data_serial(prijemx,2);
   	char prijem_data[128];
   	int i=0;
 	memset(&prijem_data, 0, sizeof(prijem_data));  
@@ -28,4 +29,3 @@ while(1){
 //------------------------------  -----------------------------
 	return 0;
 }
-

@@ -13,6 +13,7 @@ using namespace std;
 //-----------------------------------------------------------
 int main(void)
 {
+
 //--------Vytvor server a pripoj-----------------------------
   port_int = open_serial("/dev/ttyO2",B115200); 
   printf("Serial port open - /dev/ttyO2\n");
@@ -28,7 +29,7 @@ int main(void)
 		memset(&prijem_serial[o], 0, sizeof(prijem_serial[o])); 
 	}  
 //-----------------------------------------------------------
-  get_data_server(prijemx);     //data zo socket
+  get_data_socket(prijemx);     //data zo socket
 //-----------------------------------------------------------
 //-----------------------------------------------------------
   if (strcmp(prijemx[0], "data") == 0){
