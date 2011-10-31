@@ -23,7 +23,7 @@ int main(void)
 	sprintf(odosli_data[1],"%s","100");  
 	send_data_serial(odosli_data,2);
 //-----------------------------------------------------------
-	msleep(8);
+	msleep(15);
 	char prijem_data[20][10];
         for (int clear=0;clear != 20;clear++){
                 memset(&prijem_data[clear],0,sizeof(prijem_data[clear]));
