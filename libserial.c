@@ -62,17 +62,6 @@ void send_data_serial(char (*data_vstup)[char_for_array_serial],int pocet_dat){
     	memset(&odosli, 0, sizeof(odosli));   
  	pocet_datx = zakoduj(odosli,data_vstup,pocet_dat);
   	odosli[pocet_datx] = '\n';  
-	printf("%d",pocet_datx);
-	printf("\n");
-	printf("%d",odosli[0]);
-	printf("\n");
-        printf("%d",odosli[1]);
-	printf("\n");
-        printf("%d",odosli[2]);
-	printf("\n");
-        printf("%d",odosli[3]);
-	printf("\n");
-
 	write_serial(port_int,odosli);   
 }
 //------------------------------------------

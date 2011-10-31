@@ -7,6 +7,7 @@ using namespace std;
 #define char_for_array_serial 10
 #include "libprotocol.c";
 #include "libserial.c";
+#include "libtime.c";
 //--------------------------------------------
 
 int main(void)
@@ -17,14 +18,15 @@ int main(void)
 //-----------------------------------------------------------
 while(1){
 	char prijemx[2][10];
-	  sprintf(prijemx[0],"%s","data");
+	sprintf(prijemx[0],"%s","data");
 	sprintf(prijemx[1],"%s","100");  
 	send_data_serial(prijemx,2);
   	char prijem_data[128];
   	int i=0;
 	memset(&prijem_data, 0, sizeof(prijem_data));  
   	i = read(port_int,&prijem_data,128);
-	printf("%d\n",prijem_data[0]);
+	printf(prijem_data);
+	msleep(100);
   }
 //------------------------------  -----------------------------
 	return 0;
