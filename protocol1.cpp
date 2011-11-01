@@ -49,15 +49,10 @@ while(zap){
         printf("5. - ");        
 	printf(data_prijem[5]);
         printf("\n");
-	sprintf(data_odosli[0],"%d",100);
-	printf(data_odosli[0];
-	sprintf(data_odosli[1],"%d",200);
-	printf(data_odosli[1]);
+	gafuso_send_socket(clientsock,data_prijem,2);
 //---------------------------------------------------
 }
 	close(clientsock);
 	return 0;
-:q
 }
-:q
 

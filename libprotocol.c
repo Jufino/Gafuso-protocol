@@ -5,8 +5,11 @@ int gafuso_code(char data_vystup[],char (*data_vstup)[char_for_array],int size){
 	int poc_char_pocitadlo=0;		
 	int byte_for_char = 1;
 	int byte_for_dat = 1;
-//        for (int o=8; size > pow(2,o); o+=8) byte_for_dat=o/8;
-//	for (int o=8; char_for_array > pow(2, o); o+=8) byte_for_char=o/8;
+        for (int o=8; size > pow(2,o); o+=8) byte_for_dat=o/8;
+	for (int o=8; char_for_array > pow(2, o); o+=8) byte_for_char=o/8;
+	data_vystup[posun] = byte_for_dat;
+	data_vystup[posun+1] = byte_for_char;
+	posun+=2;
 	for (int o=0;o!=byte_for_dat;o++){
 		data_vystup[posun] = (size>>poc_char_pocitadlo)&0xFF;
 		poc_char_pocitadlo+=8;
