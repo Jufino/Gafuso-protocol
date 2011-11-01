@@ -56,10 +56,12 @@ while(zap){
                 reset_atmega();
 	}
 	else {
-		write_serial(port_int,data_prijem[0]);
-		write_serial(port_int,"\n");
-		write_serial(port_int,data_prijem[1]);
-		write_serial(port_int,"\n");
+                write_serial(port_int,data_prijem[0]);
+                write_serial(port_int,"\n");
+		for(int o=1;o!=atoi(data_prijem[1]);o++){
+			write_serial(port_int,data_prijem[o+1]);
+			write_serial(port_int,"\n");
+		}
 	}
 //---------------------------------------------------
 	}
