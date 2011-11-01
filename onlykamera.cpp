@@ -28,16 +28,16 @@ int main(void)
 	printf("Client pripojeny");         
 //----------------------------------------
 	while(1){  
-//-------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 		for(int vymaz=0;vymaz != 15;vymaz++){
       			memset(&data[vymaz][0], 0, sizeof(data[vymaz]));
   		}
-    		get_data_socket(clientsock,data);       
+    		gafuso_recv_array(clientsock,data);       
 //-----------------------------------------------------------------------------
-  		img = cvQueryFrame(camera);
         	if(strcmp(data[0], "img") == 0){
 			send_img(clientsock,img,80);
 		} 
+		img = cvQueryFrame(camera);
 	}
 	close(clientsock);
 	return 0;
