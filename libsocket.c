@@ -39,7 +39,6 @@ int vytvor_server(int PORT){
 //--------------------------------------------------------------------------
 int connect(char hostname[],int PORT){
 	int	sd;
-	struct sockaddr_in sin;
 	struct sockaddr_in pin;
 	struct hostent *hp;
 
@@ -86,13 +85,13 @@ void send_img(int socket, IplImage *img,int kvalita)
         buff.clear();
 }
 //-----------------------------------------------------------------
-void gafuso_get_socket(int socket, char prijem[][char_for_array]){
+void gafuso_recv_array(int socket, char prijem[][char_for_array]){
   	char recvdata[1000000];
 	recv(socket, recvdata, 1000000, 0);
 	gafuso_decode(prijem,recvdata);
 }
 //-----------------------------------------------------------------
-void gafuso_send_socket(int socket, char odosli[][char_for_array],int pocet_dat)
+void gafuso_send_array(int socket, char odosli[][char_for_array],int pocet_dat)
 {
 	char data_vystup[100000];
 	gafuso_code(data_vystup,odosli,pocet_dat);

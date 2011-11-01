@@ -29,7 +29,7 @@ while(zap){
                 memset(&data_odosli[o], 0, sizeof(data_odosli[o]));
 	}
 //-----------------------------------------------------
-	gafuso_get_socket(clientsock, data_prijem);     //data zo socketu
+	gafuso_recv_array(clientsock, data_prijem);     //data zo socketu
 //-----------------------------------------------------------
 	printf("0. - ");
 	printf(data_prijem[0]);
@@ -49,7 +49,7 @@ while(zap){
         printf("5. - ");        
 	printf(data_prijem[5]);
         printf("\n");
-	gafuso_send_socket(clientsock,data_prijem,2);
+	gafuso_send_array(clientsock,data_prijem,2);
 //---------------------------------------------------
 }
 	close(clientsock);

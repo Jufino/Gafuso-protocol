@@ -37,32 +37,32 @@ while(zap){
         for(int o=0;o<sizeof(data_odosli)/sizeof(data_odosli[0]);o++){
                 memset(&data_odosli[o], 0, sizeof(data_odosli[o]));
 	}
+        memset(&prijem_serial, 0, sizeof(prijem_serial));
+
 //-----------------------------------------------------
-	get_data_socket(clientsock, data_prijem);     //data zo socketu
-//-----------------------------------------------------------
+	gafuso_recv_array(clientsock, data_prijem);     //data zo socketu
 //-----------------------------------------------------------
 	if (strcmp(data_prijem[0], "data") == 0){
-		send_data_serial(port_int,data_prijem,2);
-		read(port_int,&prijem_serial,128);
-		for(int o=0;o<11;o++){
-			sprintf(data_odosli[o],"%d",prijem_serial[o]);
-		}
-		send_data_socket(clientsock, data_odosli,11);
-		
+		//control string
+		write_serial(port_int,data_prijem[0]);
+		write_serial(port_int,"\n");
+		//------------------
+		int pocet_dat = atoi(data_prijem[1]); //load number of data
+		read(port_int, prijem_serial,pocet_dat+10); // read data from serial
+		for(int o=0;o!=pocet_dat;o++)	sprintf(data_odosli[o],"%d",prijem_serial[o]); //convert from byte to string
+		gafuso_send_array(clientsock,data_odosli,pocet_dat);	//send data by gafuso protocol
 	}
-	else if(strcmp(data_prijem[0],"prikaz") == 0){
-		for(int o=0; o<strlen(data_prijem[1]); o++)
-			data_odosli[0][o]=data_prijem[1][o];
-		send_data_serial(port_int, data_odosli,1);
-	}
-	else if(strcmp(data_prijem[0],"reset") == 0){
+        else if(strcmp(data_prijem[0],"reset") == 0){
                 reset_atmega();
-        }
-	else if(strcmp(data_prijem[0],"vyp") == 0)	zap =0;
-	else						send_data_serial(port_int, data_prijem,2);
-
+	}
+	else {
+		write_serial(port_int,data_prijem[0]);
+		write_serial(port_int,"\n");
+		write_serial(port_int,data_prijem[1]);
+		write_serial(port_int,"\n");
+	}
 //---------------------------------------------------
-}
+	}
 	close(clientsock);
 	gpio_close(157);
 	return 0;
