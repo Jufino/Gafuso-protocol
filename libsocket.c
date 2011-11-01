@@ -54,16 +54,16 @@ void send_img(int socket, IplImage *img,int kvalita)
         buff.clear();
 }
 //-----------------------------------------------------------------
-void get_data_socket(int socket, char prijem[][char_for_array]){
+void gafuso_get_socket(int socket, char prijem[][char_for_array]){
   	char recvdata[1000000];
 	recv(socket, recvdata, 1000000, 0);
-	dekoduj(prijem,recvdata);
+	gafuso_decode(prijem,recvdata);
 }
 //-----------------------------------------------------------------
-void send_data_socket(int socket, char odosli[][char_for_array],int pocet_dat)
+void gafuso_send_socket(int socket, char odosli[][char_for_array],int pocet_dat)
 {
 	char data_vystup[100000];
-	zakoduj(data_vystup,odosli,pocet_dat);
+	gafuso_code(data_vystup,odosli,pocet_dat);
 	send_data(socket,data_vystup);
 }
 //-----------------------------------------------------------------

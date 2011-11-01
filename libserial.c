@@ -40,19 +40,19 @@ void write_serial(int port,char data[]){
 	write(port,data,strlen(data));
 }
 //------------------------------------------
-void send_data_serial(int port, char (*data_vstup)[char_for_array],int pocet_dat){
+void gafuso_send_serial(int port, char (*data_vstup)[char_for_array],int pocet_dat){
   	char odosli[128];
   	int pocet_datx=0;
     	memset(&odosli, 0, sizeof(odosli));   
- 	pocet_datx = zakoduj(odosli,data_vstup,pocet_dat);
+ 	pocet_datx = gafuso_code(odosli,data_vstup,pocet_dat);
   	odosli[pocet_datx] = '\n';  
 	write_serial(port,odosli);   
 }
 //------------------------------------------
-void receive_data_serial(int port, char (*prijem)[char_for_array]){
+void gafuso_get_serial(int port, char (*prijem)[char_for_array]){
   	char prijem_data[128];
   	memset(&prijem_data, 0, sizeof(prijem_data));  
   	read(port,&prijem_data,128);
-  	dekoduj(prijem,prijem_data);
+  	gafuso_decode(prijem,prijem_data);
 }
 //------------------------------------------

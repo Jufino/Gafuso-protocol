@@ -20,8 +20,8 @@ void send_data(int socket, char len[]);
 //-----------------------------------------------------------------
 void send_img(int socket, IplImage *img,int kvalita);
 //-----------------------------------------------------------------
-void get_data_socket(int socket, char prijem[][char_for_array]);
+void gafuso_get_socket(int socket, char prijem[][char_for_array]);
 //-----------------------------------------------------------------
-void send_data_socket(int socket, char odosli[][char_for_array],int pocet_dat);
+void gafuso_send_socket(int socket, char odosli[][char_for_array],int pocet_dat);
 //-----------------------------------------------------------------
 #endif
