@@ -36,6 +36,38 @@ int vytvor_server(int PORT){
 	printf("Connection open on port %d\n", PORT); 
 	return clientsock;
 }
+//--------------------------------------------------------------------------
+int connect(char hostname[],int PORT){
+	int	sd;
+	struct sockaddr_in sin;
+	struct sockaddr_in pin;
+	struct hostent *hp;
+
+	/*skusi vyhladat hostovaci server */
+	if ((hp = gethostbyname(hostname)) == 0) {
+		perror("gethostbyname");
+		exit(1);
+	}
+
+	/* zbera informacie o serveri */
+	memset(&pin, 0, sizeof(pin));
+	pin.sin_family = AF_INET;
+	pin.sin_addr.s_addr = ((struct in_addr *)(hp->h_addr))->s_addr;
+	pin.sin_port = htons(PORT);
+
+	/* grab an Internet domain socket */
+	if ((sd = socket(AF_INET, SOCK_STREAM, 0)) == -1) {
+		perror("socket");
+		exit(1);
+	}
+
+	/* pripoj sa na host na porte */
+	if (connect(sd,(struct sockaddr *)  &pin, sizeof(pin)) == -1) {
+		perror("connect");
+		exit(1);
+	}
+  return sd;
+}
 //----------------------------------------------------------------
 void send_data(int socket, char len[])
 {
