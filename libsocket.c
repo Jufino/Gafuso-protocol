@@ -55,10 +55,8 @@ void send_img(int socket, IplImage *img,int kvalita)
 }
 //-----------------------------------------------------------------
 void get_data_socket(int socket, char prijem[][char_for_array]){
-	char buffer[5];
-	recv(socket, buffer, 5, 0);
-	char recvdata[atoi(buffer)];
-  	recv(socket, recvdata, atoi(buffer), 0);
+  	char recvdata[1000000];
+	recv(socket, recvdata, 1000000, 0);
 	dekoduj(prijem,recvdata);
 }
 //-----------------------------------------------------------------

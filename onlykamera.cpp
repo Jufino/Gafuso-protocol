@@ -36,7 +36,7 @@ int main(void)
 //-----------------------------------------------------------------------------
   		img = cvQueryFrame(camera);
         	if(strcmp(data[0], "img") == 0){
-			send_img(clientsock,img,kvalita);
+			send_img(clientsock,img,80);
 		} 
 	}
 	close(clientsock);

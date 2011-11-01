@@ -36,8 +36,8 @@ val_dilate = atoi(data[7]);
 CvScalar hsv_min = cvScalar(min_hue,min_sat,min_val,0);
 CvScalar hsv_max = cvScalar(max_hue,max_sat,max_val,0);
 //kamera----------------------------
-cvSetCaptureProperty( camera, CV_CAP_PROP_FRAME_WIDTH, 320);
-cvSetCaptureProperty( camera, CV_CAP_PROP_FRAME_HEIGHT, 240);
+cvSetCaptureProperty( camera, CV_CAP_PROP_FRAME_WIDTH, 160);
+cvSetCaptureProperty( camera, CV_CAP_PROP_FRAME_HEIGHT, 120);
 //----------------------------------
 int clientsock = vytvor_server(PORT);
 //Opencv  
