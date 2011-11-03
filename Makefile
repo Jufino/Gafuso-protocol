@@ -18,6 +18,9 @@ test_serial1: test_serial1.cpp
 test_serial: test_serial.cpp
 	$(CPP) test_serial.cpp -o test_serial $(OFLAGS)
 
+kamera: kamera.cpp
+	$(CPP) kamera.cpp -o kamera $(OFLAGS)
+
 all: $(TARGET)
 	@echo "All done"
 

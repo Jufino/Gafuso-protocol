@@ -2,6 +2,11 @@
 #include <netinet/in.h>                                                         
 #include <sys/socket.h>                                                         
 #include <arpa/inet.h>  
+#include <cv.h>
+#include <highgui.h>
+#include <cxcore.h>
+using namespace cv;
+
 //-----------------------------------------------------------
 //definicia portu pri otvoreni socketu
 //#define PORT 1212
@@ -57,6 +62,19 @@ void send_data(int socket, char len[])
 {
 	send(socket, len, strlen(len), 0);
 }
+//odosle obrazok na socket
+void send_img(int socket, IplImage *img,int kvalita)
+{
+        vector<unsigned char> buff;
+	vector<int> param = vector<int>(2);
+      	param[0] = CV_IMWRITE_JPEG_QUALITY;
+      	param[1] = kvalita;
+        Mat M = Mat(img);
+        imencode(".jpg", M, buff, param);
+  	send(socket, &buff[0], buff.size(), 0);
+        buff.clear();
+}
+
 //-----------------------------------------------------------------
 //nacita zo data zo socketu
 //-----------------------------------------------------------------
@@ -73,4 +91,32 @@ void send_data_socket(char odosli[][char_for_array],int pocet_dat)
 	char data_vystup[128];
 	zakoduj(data_vystup,odosli,pocet_dat);
 	send_data(clientsock,data_vystup);
+}
+//-----------------------------------------------------------------
+void hodnota_pixelu(IplImage  *imgx){
+	char len[3][10];
+	for(int vymaz=0;vymaz != 3;vymaz++){
+                memset(&len[vymaz][0], 0, sizeof(len[vymaz]));
+        }
+	int precision = 0;
+	int decimal, sign;
+	int hodx,hody;
+	hodx = atoi(data[1]);
+	hody = atoi(data[2]);
+//----------------------------------------------------
+	sprintf(len[0],"%d",cvGet2D(imgx,hody,hodx).val[0]);        
+	sprintf(len[1],"%d",cvGet2D(imgx,hody,hodx).val[1]);
+      	sprintf(len[2],"%d",cvGet2D(imgx,hody,hodx).val[2]);
+	printf(len[0]);
+    	printf("\n");
+        printf(len[1]);
+        printf("\n");
+        printf(len[2]);
+        printf("\n");
+
+//	sprintf(len[0],"%d",100);       
+//	sprintf(len[1],"%d",100);
+//      sprintf(len[2],"%d",100);
+
+	send_data_socket(len,3);
 }
