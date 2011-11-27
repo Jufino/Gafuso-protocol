@@ -50,9 +50,7 @@ while(1){
 	for(int vymaz=0;vymaz != 15;vymaz++){
       		memset(&data[vymaz][0], 0, sizeof(data[vymaz]));
   	}
-    	get_data_socket(data);
-	printf(data[0]);
-	printf("\n");        
+    	get_data_socket(data);       
 //-------------------------------------------------------------------------------
 	if (strcmp(data[0], "procces") == 0){
   		img = cvQueryFrame(camera);
@@ -97,7 +95,7 @@ while(1){
       }
       else if (strcmp(data[0], "hodnota") == 0){
 	printf("caka na hodnotuz\n");      
-  	hodnota_pixelu(hsv);
+//  	hodnota_pixelu(hsv);
       }
 	else if (strcmp(data[0], "save") == 0){
   		for(int vymaz=0;vymaz != 15;vymaz++){

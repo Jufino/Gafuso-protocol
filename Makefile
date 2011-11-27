@@ -9,8 +9,8 @@ TARGET=protocol
 protocol: protocol.cpp
 	$(CPP) protocol.cpp -o protocol $(OFLAGS)
 
-protocol1: protocol1.cpp
-	$(CPP) protocol1.cpp -o protocol1 $(OFLAGS)
+example: example.cpp
+	$(CPP) example.cpp -o example $(OFLAGS)
 
 test_serial1: test_serial1.cpp
 	$(CPP) test_serial1.cpp -o test_serial1 $(OFLAGS)
@@ -20,6 +20,9 @@ test_serial: test_serial.cpp
 
 kamera: kamera.cpp
 	$(CPP) kamera.cpp -o kamera $(OFLAGS)
+
+protocolTest: protocolTest.cpp
+	$(CPP) protocolTest.cpp -o protocolTest -fno-stack-protector  $(OFLAGS) 
 
 all: $(TARGET)
 	@echo "All done"

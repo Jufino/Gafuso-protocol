@@ -1,9 +1,5 @@
-#include <cv.h>
-#include <highgui.h>
-#include <cxcore.h>
-
-using namespace cv;
-CvCapture* camera = cvCaptureFromCAM(0);
+#include "libopencv.h"
+//-------------------------------------------------------------------------------
 int *najdi_objekt(IplImage  *img, IplImage  *hsv,IplImage  *thresholded,CvScalar hsv_min,CvScalar hsv_max,int erode,int dilate){
     int minx,miny,maxx,maxy;
     static int suradnice[4];
@@ -35,7 +31,7 @@ int *najdi_objekt(IplImage  *img, IplImage  *hsv,IplImage  *thresholded,CvScalar
     suradnice[3] = maxy;
     return suradnice;
 }
-
+//-----------------------------------------------------------------------------------
 int najdi_objekt_kvadranty(IplImage  *img, IplImage  *hsv,IplImage  *thresholded,CvScalar hsv_min,CvScalar hsv_max,int erode,int dilate,int pocet_kvadrantov){
     int minx,miny,maxx,maxy;
     int sirka[pocet_kvadrantov],sirka_max=-1;
@@ -81,8 +77,4 @@ int najdi_objekt_kvadranty(IplImage  *img, IplImage  *hsv,IplImage  *thresholded
       } 
     return sirka_max;
 }
-
-
-
-
-
+//-----------------------------------------------------------------

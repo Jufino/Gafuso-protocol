@@ -9,19 +9,14 @@ using namespace std;
 #include "libprotocol.c";
 #include "libsocket.c";
 #include "libspec.c";
-#include "libserial.c";
-#include "libtime.c";
 //-----------------------------------------------------------
 int main(void)
 {
 //--------Vytvor server a pripoj-----------------------------
-  	port_int = open_serial("/dev/ttyO2",B115200); 
-  	printf("Serial port open - /dev/ttyO2\n");
 	vytvor_server();
 //-----------------------------------------------------------
 	char data_prijem[40][char_for_array];   //pole pre prijem dat 
 	char data_odosli[40][char_for_array];   //pole pre odosielanie
-while(1){
 //-------mazanie polii---------------------------------------
 	for (int o=0;o<sizeof(data_prijem)/sizeof(data_prijem[0]);o++){
 		memset(&data_prijem[o], 0, sizeof(data_prijem[o])); 
@@ -35,14 +30,13 @@ while(1){
 //-----------------------------------------------------------
 	if (strcmp(data_prijem[0], "data") == 0){
 //napriklad chceme poslat 15 dat - vlozime si ich do pola
-		send_data_serial(data_prijem,1);
-		msleep(15);	
-		receive_data_serial(data_odosli);
+		for(int q=0;q <15;q++){
+			sprintf(data_odosli[q],"%d",q);
+		}	
 //------------------------------------
-		send_data_socket(data_odosli,12);
+		send_data_socket(data_odosli,15);
 	}
 //---------------------------------------------------
-}
 	return 0;
 }
 

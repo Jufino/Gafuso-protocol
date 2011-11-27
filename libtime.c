@@ -1,7 +1,5 @@
 //-----------------------------------------------------------
-#include <stdio.h>
-#include<time.h>
-#include<signal.h>
+#include "libtime.h"
 //-----------------------------------------------------------
 int __nsleep(const struct timespec *req, struct timespec *rem)
 {
@@ -11,7 +9,7 @@ int __nsleep(const struct timespec *req, struct timespec *rem)
     else
         return 1;
 }
- 
+//-----------------------------------------------------------
 int msleep(unsigned long milisec)
 {
     struct timespec req={0},rem={0};
