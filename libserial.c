@@ -1,4 +1,4 @@
-#include "libserial.c"
+#include "libserial.h"
 //--------------------------------------------------------
 int open_serial(const char *port, speed_t speed) {
     int fd;

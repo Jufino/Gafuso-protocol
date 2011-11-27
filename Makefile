@@ -12,7 +12,10 @@ protocol: protocol.cpp
 example: example.cpp
 	$(CPP) example.cpp -o example $(OFLAGS)
 
-test_serial1: test_serial1.cpp
+example1: example1.cpp
+	$(CPP) example1.cpp -o example1 $(OFLAGS)
+
+test_serial1: testserial1.cpp
 	$(CPP) test_serial1.cpp -o test_serial1 $(OFLAGS)
 
 test_serial: test_serial.cpp

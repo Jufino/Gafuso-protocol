@@ -6,6 +6,11 @@
 #include <errno.h>
 #include <stdio.h>
 #include <sys/ioctl.h>
+#include "libprotocol.h"
+
+#ifndef char_for_array_serial
+	#define char_for_array_serial 10
+#endif
 //--------------------------------------------------------
 int open_serial(const char *port, speed_t speed);
 //-----------------------------------------
