@@ -25,14 +25,14 @@ int main(void)
 	char prijem_serial[128];
 while(zap){
 //-------mazanie polii---------------------------------------
-	for (int o=0;o<sizeof(data_prijem)/sizeof(data_prijem[0]);o++){
-		memset(&data_prijem[o], 0, sizeof(data_prijem[o])); 
-	}  
-	for (int o=0;o<sizeof(data_odosli)/sizeof(data_odosli[0]);o++){
-		memset(&data_odosli[o], 0, sizeof(data_odosli[o])); 
-	} 
- 	memset(&prijem_serial, 0, sizeof(prijem_serial));
-//-----------------------------------------------------------
+        for(int o=0;o<sizeof(data_prijem)/sizeof(data_prijem[0]);o++){
+                memset(&data_prijem[o], 0, sizeof(data_prijem[o]));
+	}
+        for(int o=0;o<sizeof(data_odosli)/sizeof(data_odosli[0]);o++){
+                memset(&data_odosli[o], 0, sizeof(data_odosli[o]));
+	}
+
+//-----------------------------------------------------
 	get_data_socket(clientsock, data_prijem);     //data zo socketu
 //-----------------------------------------------------------
 //-----------------------------------------------------------

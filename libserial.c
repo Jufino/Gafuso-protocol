@@ -21,8 +21,9 @@ int open_serial(const char *port, speed_t speed) {
 	my_termios.c_cflag &= ~CSTOPB;
 	my_termios.c_cflag &= ~CSIZE;
 	my_termios.c_cflag |= CS8;
-	//raw input
+	//raw input and output
 	my_termios.c_lflag &= ~(ICANON | ECHO | ECHOE | ISIG);
+	my_termios.c_oflag &= ~OPOST;
 	//nieje software
 	my_termios.c_iflag &= ~(IXON | IXOFF | IXANY);
 	//-----------------------------------
