@@ -5,7 +5,6 @@
 
 using namespace std;
 #define char_for_array 10
-#define char_for_array_serial 10
 #include "libprotocol.c";
 #include "libsocket.c";
 #include "libspec.c";
@@ -13,7 +12,6 @@ using namespace std;
 void socket_read(char *prijem){
   	recv(clientsock, prijem, 2, 0);
 }
-
 
 //-----------------------------------------------------------
 int main(void)
@@ -31,11 +29,7 @@ int main(void)
 	while(1) {
 		char input_data[2];
 		socket_read(input_data);     //data zo socketu
-		//printf("-> %s", input_data);
-		//printf("recved %s\n", input_data);
-
 		if (strcmp(input_data, "d") == 0){
-
 			for(int q=0;q < N;q++){
 				sprintf(data_odosli[q],"5000");
 			}	

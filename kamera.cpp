@@ -6,10 +6,10 @@
 using namespace std;
 char data[15][10];
 #define PORT 1212
-#include "libprotocol.c"
-#include "libsocket.c"
-#include "libopencv.c"
-#include "libfile.c"
+#include "libprotocol.h"
+#include "libsocket.h"
+#include "libopencv.h"
+#include "libfile.h"
 
 int main()
 {

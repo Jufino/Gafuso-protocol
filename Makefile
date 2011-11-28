@@ -4,29 +4,41 @@ CPP=$(CROSS_COMPILE)g++ -Wall -g
 GFLAGS=`pkg-config --libs --cflags gtk+-2.0 gmodule-2.0`
 OFLAGS=`pkg-config --libs --cflags opencv`
 
-TARGET=protocol
+all:protocol 
 
-protocol: protocol.cpp
-	$(CPP) protocol.cpp -o protocol $(OFLAGS)
+protocol.o: protocol.cpp libtime.o libspec.o libprotocol.o libsocket.o libserial.o libopencv.o
+	$(CPP) -c protocol.cpp
 
-example: example.cpp
-	$(CPP) example.cpp -o example $(OFLAGS)
+libtime.o: libtime.c
+	$(CPP) -c libtime.c
 
-example1: example1.cpp
-	$(CPP) example1.cpp -o example1 $(OFLAGS)
+libspec.o: libspec.c
+	$(CPP) -c libspec.c
 
-test_serial1: testserial1.cpp
-	$(CPP) test_serial1.cpp -o test_serial1 $(OFLAGS)
+libprotocol.o: libprotocol.c
+	$(CPP) -c libprotocol.c
 
-test_serial: test_serial.cpp
-	$(CPP) test_serial.cpp -o test_serial $(OFLAGS)
+libsocket.o: libsocket.c
+	$(CPP) -c libsocket.c
 
-kamera: kamera.cpp
-	$(CPP) kamera.cpp -o kamera $(OFLAGS)
+libserial.o: libserial.c
+	$(CPP) -c libserial.c
 
-protocolTest: protocolTest.cpp
-	$(CPP) protocolTest.cpp -o protocolTest -fno-stack-protector  $(OFLAGS) 
+libopencv.o: libopencv.c
+	$(CPP) -c libopencv.c $(OFLAGS)
 
-all: $(TARGET)
-	@echo "All done"
+libfile.o: libfile.c
+	$(CPP) -libfile.c
+
+remove_lib:
+	rm libtime.o
+	rm libspec.o
+	rm libprotocol.o
+	rm libsocket.o
+	rm libserial.o
+	rm libopencv.o
+	rm libfile.o 
+
+remove:
+	rm protocol.o
 

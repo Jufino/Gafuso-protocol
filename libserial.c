@@ -39,7 +39,7 @@ void write_serial(int port,char data[]){
 	write(port,data,strlen(data));
 }
 //------------------------------------------
-void send_data_serial(int port, char (*data_vstup)[char_for_array_serial],int pocet_dat){
+void send_data_serial(int port, char (*data_vstup)[char_for_array],int pocet_dat){
   	char odosli[128];
   	int pocet_datx=0;
     	memset(&odosli, 0, sizeof(odosli));   
@@ -48,7 +48,7 @@ void send_data_serial(int port, char (*data_vstup)[char_for_array_serial],int po
 	write_serial(port,odosli);   
 }
 //------------------------------------------
-void receive_data_serial(int port, char (*prijem)[char_for_array_serial]){
+void receive_data_serial(int port, char (*prijem)[char_for_array]){
   	char prijem_data[128];
   	memset(&prijem_data, 0, sizeof(prijem_data));  
   	read(port,&prijem_data,128);
