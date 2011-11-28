@@ -5,13 +5,12 @@
 
 using namespace std;
 #define char_for_array 10
-#define char_for_array_serial 10
-#include "libprotocol.c";
+#include "libprotocol.h";
 #define PORT 1213
-#include "libsocket.c";
-#include "libspec.c";
-#include "libserial.c";
-#include "libtime.c";
+#include "libsocket.h";
+#include "libspec.h";
+#include "libserial.h";
+#include "libtime.h";
 //-----------------------------------------------------------
 int main(void)
 {

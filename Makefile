@@ -6,8 +6,12 @@ OFLAGS=`pkg-config --libs --cflags opencv`
 
 all:protocol 
 
-protocol.o: protocol.cpp libtime.o libspec.o libprotocol.o libsocket.o libserial.o libopencv.o
-	$(CPP) -c protocol.cpp
+lib: libtime.o libspec.o libprotocol.o libsocket.o libserial.o libopencv.o libfile.o
+
+protocol: protocol.cpp
+	$(CPP) protocol.cpp -o protocol libtime.o libspec.o libprotocol.o libsocket.o libserial.o $(OFLAGS)
+
+kamera:
 
 libtime.o: libtime.c
 	$(CPP) -c libtime.c
@@ -19,7 +23,7 @@ libprotocol.o: libprotocol.c
 	$(CPP) -c libprotocol.c
 
 libsocket.o: libsocket.c
-	$(CPP) -c libsocket.c
+	$(CPP) -c libsocket.c $(OFLAGS)
 
 libserial.o: libserial.c
 	$(CPP) -c libserial.c
@@ -28,7 +32,7 @@ libopencv.o: libopencv.c
 	$(CPP) -c libopencv.c $(OFLAGS)
 
 libfile.o: libfile.c
-	$(CPP) -libfile.c
+	$(CPP) -c libfile.c
 
 remove_lib:
 	rm libtime.o

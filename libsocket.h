@@ -1,11 +1,14 @@
+#ifndef _LIBSOCKET_H
+#define _LIBSOCKET_H
 //Socket
 #include <netinet/in.h>                                                         
 #include <sys/socket.h>                                                         
 #include <arpa/inet.h>  
-//opencv
+//OpenCV
 #include <cv.h>
 #include <highgui.h>
 #include <cxcore.h>
+#include "libprotocol.h"
 using namespace cv;
 //-----------------------------------------------------------------
 //definicia portu pri otvoreni socketu
@@ -14,8 +17,7 @@ using namespace cv;
 #ifndef PORT
   #define PORT 1212
 #endif 
-//-----------------------------------------------------------------
-int serversock, clientsock; 
+//----------------------------------------------------------------- 
 //-----------------------------------------------------------------
 void quit(char* msg,int retval);
 //-----------------------------------------------------------------
@@ -29,3 +31,4 @@ void get_data_socket(char prijem[][char_for_array]);
 //-----------------------------------------------------------------
 void send_data_socket(char odosli[][char_for_array],int pocet_dat);
 //-----------------------------------------------------------------
+#endif

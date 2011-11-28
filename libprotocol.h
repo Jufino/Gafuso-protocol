@@ -1,3 +1,5 @@
+#ifndef _LIBPROTOCOL_H
+#define _LIBPROTOCOL_H
 //-----------------------------------------------------------
 //operacie z datami a
 //-----------------------------------------------------------
@@ -40,3 +42,4 @@ int zakoduj(char data_vystup[],char (*data_vstup)[char_for_array],int size);
 //-----------------------------------------------------------
 int dekoduj(char (*data_vystup)[char_for_array],char data_vstup[]);
 //--------------------------------------------
+#endif

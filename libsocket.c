@@ -1,5 +1,6 @@
 #include "libsocket.h"  
 //----------------------------------------------------------
+int serversock,clientsock;
 void quit(char* msg,int retval){
 	fprintf(stderr,"%s\n", msg);
 	exit(retval);
