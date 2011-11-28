@@ -10,25 +10,18 @@
 #include <cxcore.h>
 #include "libprotocol.h"
 using namespace cv;
-//-----------------------------------------------------------------
-//definicia portu pri otvoreni socketu
-//#define PORT 1212
-//-----------------------------------------------------------------
-#ifndef PORT
-  #define PORT 1212
-#endif 
 //----------------------------------------------------------------- 
 //-----------------------------------------------------------------
 void quit(char* msg,int retval);
 //-----------------------------------------------------------------
-void vytvor_server();
+int vytvor_server(int PORT);
 //-----------------------------------------------------------------
 void send_data(int socket, char len[]);
 //-----------------------------------------------------------------
 void send_img(int socket, IplImage *img,int kvalita);
 //-----------------------------------------------------------------
-void get_data_socket(char prijem[][char_for_array]);
+void get_data_socket(int socket, char prijem[][char_for_array]);
 //-----------------------------------------------------------------
-void send_data_socket(char odosli[][char_for_array],int pocet_dat);
+void send_data_socket(int socket, char odosli[][char_for_array],int pocet_dat);
 //-----------------------------------------------------------------
 #endif

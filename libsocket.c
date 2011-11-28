@@ -1,12 +1,12 @@
 #include "libsocket.h"  
 //----------------------------------------------------------
-int serversock,clientsock;
 void quit(char* msg,int retval){
 	fprintf(stderr,"%s\n", msg);
 	exit(retval);
 }
 //------------------------------------------------------------------
-void vytvor_server(){
+int vytvor_server(int PORT){
+  int clientsock,serversock;
   struct sockaddr_in server;	
   if ((serversock = socket(PF_INET, SOCK_STREAM, 0)) == -1) {             
 		quit("socket() failed", 1);
@@ -34,6 +34,7 @@ void vytvor_server(){
 		quit("accept() failed", 1);                                     
 	}
 	printf("Connection open on port %d\n", PORT); 
+	return clientsock;
 }
 //----------------------------------------------------------------
 void send_data(int socket, char len[])
@@ -53,18 +54,18 @@ void send_img(int socket, IplImage *img,int kvalita)
         buff.clear();
 }
 //-----------------------------------------------------------------
-void get_data_socket(char prijem[][char_for_array]){
+void get_data_socket(int socket, char prijem[][char_for_array]){
 	char buffer[5];
-	recv(clientsock, buffer, 5, 0);
+	recv(socket, buffer, 5, 0);
 	char recvdata[atoi(buffer)];
-  	recv(clientsock, recvdata, atoi(buffer), 0);
+  	recv(socket, recvdata, atoi(buffer), 0);
 	dekoduj(prijem,recvdata);
 }
 //-----------------------------------------------------------------
-void send_data_socket(char odosli[][char_for_array],int pocet_dat)
+void send_data_socket(int socket, char odosli[][char_for_array],int pocet_dat)
 {
 	char data_vystup[100000];
 	zakoduj(data_vystup,odosli,pocet_dat);
-	send_data(clientsock,data_vystup);
+	send_data(socket,data_vystup);
 }
 //-----------------------------------------------------------------

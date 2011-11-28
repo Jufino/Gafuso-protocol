@@ -9,9 +9,10 @@ all:protocol
 lib: libtime.o libspec.o libprotocol.o libsocket.o libserial.o libopencv.o libfile.o
 
 protocol: protocol.cpp
-	$(CPP) protocol.cpp -o protocol libtime.o libspec.o libprotocol.o libsocket.o libserial.o $(OFLAGS)
+	$(CPP) protocol.cpp libtime.o libspec.o libprotocol.o libsocket.o libserial.o -o protocol $(OFLAGS)
 
-kamera:
+kamera: kamera.cpp
+	$(CPP) kamera.cpp libtime.c libprotocol.c libsocket.c libopencv.o libfile.o -o kamera $(OFLAGS)
 
 libtime.o: libtime.c
 	$(CPP) -c libtime.c

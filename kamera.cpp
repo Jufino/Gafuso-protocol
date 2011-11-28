@@ -1,18 +1,26 @@
+#include <cv.h>
+#include <highgui.h>
+#include <cxcore.h>
+
 #include <cstdlib>
 #include <stdio.h>
 #include <stdlib.h>
 #include <iostream>
 
 using namespace std;
+using namespace cv;
+
 char data[15][10];
-#define PORT 1212
 #include "libprotocol.h"
 #include "libsocket.h"
 #include "libopencv.h"
 #include "libfile.h"
 
-int main()
+int main(void)
 {
+int PORT = 1212;
+CvCapture* camera = cvCaptureFromCAM(0);
+
 int kvalita = 80;
 int min_val,min_hue,min_sat,val_dilate;
 int max_val,max_hue,max_sat,val_erode;
@@ -31,7 +39,7 @@ CvScalar hsv_max = cvScalar(max_hue,max_sat,max_val,0);
 cvSetCaptureProperty( camera, CV_CAP_PROP_FRAME_WIDTH, 320);
 cvSetCaptureProperty( camera, CV_CAP_PROP_FRAME_HEIGHT, 240);
 //----------------------------------
-vytvor_server();
+int clientsock = vytvor_server(PORT);
 //Opencv  
 IplImage  *img,*hsv,*thresholded; 
 int depth;
@@ -50,7 +58,7 @@ while(1){
 	for(int vymaz=0;vymaz != 15;vymaz++){
       		memset(&data[vymaz][0], 0, sizeof(data[vymaz]));
   	}
-    	get_data_socket(data);       
+    	get_data_socket(clientsock,data);       
 //-------------------------------------------------------------------------------
 	if (strcmp(data[0], "procces") == 0){
   		img = cvQueryFrame(camera);
@@ -81,7 +89,7 @@ while(1){
   		sprintf(data[5], "%d",max_sat);
   		sprintf(data[6], "%d",val_erode);
   		sprintf(data[7], "%d",val_dilate);   
-        	send_data_socket(data,8); 
+        	send_data_socket(clientsock,data,8); 
       }
       else if (strcmp(data[0], "r_param") == 0){
 		min_val = atoi(data[1]);   
@@ -118,6 +126,7 @@ while(1){
   	}
 }
 close(clientsock);
+return 0;
 }
 
 

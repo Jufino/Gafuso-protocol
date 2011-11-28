@@ -3,7 +3,6 @@
 int *najdi_objekt(IplImage  *img, IplImage  *hsv,IplImage  *thresholded,CvScalar hsv_min,CvScalar hsv_max,int erode,int dilate){
     int minx,miny,maxx,maxy;
     static int suradnice[4];
-    img = cvQueryFrame(camera);
     cvZero(thresholded);
     cvZero(hsv);
     cvCvtColor( img, hsv, CV_BGR2HSV );

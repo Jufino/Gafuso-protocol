@@ -6,7 +6,6 @@
 using namespace std;
 #define char_for_array 10
 #include "libprotocol.h";
-#define PORT 1213
 #include "libsocket.h";
 #include "libspec.h";
 #include "libserial.h";
@@ -14,10 +13,11 @@ using namespace std;
 //-----------------------------------------------------------
 int main(void)
 {
+	int PORT = 1213;
 //--------Vytvor server a pripoj-----------------------------
   	int port_int = open_serial("/dev/ttyO2",B115200); 
   	printf("Serial port open - /dev/ttyO2\n");
-	vytvor_server();
+ 	int clientsock = vytvor_server(PORT);
 	int zap = 1;
 //-----------------------------------------------------------
 	char data_prijem[40][char_for_array];   //pole pre prijem dat 
@@ -33,7 +33,7 @@ while(zap){
 	} 
  	memset(&prijem_serial, 0, sizeof(prijem_serial));
 //-----------------------------------------------------------
-	get_data_socket(data_prijem);     //data zo socketu
+	get_data_socket(clientsock, data_prijem);     //data zo socketu
 //-----------------------------------------------------------
 //-----------------------------------------------------------
 	if (strcmp(data_prijem[0], "data") == 0){
@@ -42,7 +42,7 @@ while(zap){
 		for(int o=0;o<11;o++){
 			sprintf(data_odosli[o],"%d",prijem_serial[o]);
 		}
-		send_data_socket(data_odosli,11);
+		send_data_socket(clientsock, data_odosli,11);
 		
 	}
 	else if(strcmp(data_prijem[0],"prikaz") == 0){
