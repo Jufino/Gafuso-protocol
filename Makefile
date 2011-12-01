@@ -12,7 +12,10 @@ protocol: protocol.cpp
 	$(CPP) protocol.cpp libtime.o libspec.o libprotocol.o libsocket.o libserial.o -o protocol $(OFLAGS)
 
 kamera: kamera.cpp
-	$(CPP) kamera.cpp libtime.c libprotocol.c libsocket.c libopencv.o libfile.o -o kamera $(OFLAGS)
+	$(CPP) kamera.cpp libtime.o libprotocol.o libsocket.o libopencv.o libfile.o -o kamera $(OFLAGS)
+
+onlykamera: onlykamera.cpp
+	$(CPP) onlykamera.cpp libtime.o libprotocol.o libsocket.o libopencv.o libfile.o -o onlykamera $(OFLAGS)
 
 libtime.o: libtime.c
 	$(CPP) -c libtime.c
