@@ -16,6 +16,8 @@ void quit(char* msg,int retval);
 //-----------------------------------------------------------------
 int vytvor_server(int PORT);
 //-----------------------------------------------------------------
+int connect(char hostname[],int PORT);
+//-----------------------------------------------------------------
 void send_data(int socket, char len[]);
 //-----------------------------------------------------------------
 void send_img(int socket, IplImage *img,int kvalita);
