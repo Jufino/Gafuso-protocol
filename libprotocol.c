@@ -58,6 +58,6 @@ int gafuso_decode(char (*data_vystup)[char_for_array],char data_vstup[]){
 		}
 //------------------------------------------
 	}
-	return posun;
+	return size;
 }
 //--------------------------------------------

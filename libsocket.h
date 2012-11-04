@@ -5,16 +5,18 @@
 #include <sys/socket.h>                                                         
 #include <arpa/inet.h>  
 #include <netdb.h>
+#include <unistd.h> // UNIX standard function definitions
+#include <errno.h>
 //OpenCV
 #include <cv.h>
 #include <highgui.h>
 #include <cxcore.h>
 #include "libprotocol.h"
+
+#define recv_timeout 50
+
 using namespace cv;
 //----------------------------------------------------------------- 
-//-----------------------------------------------------------------
-void quit(char* msg,int retval);
-//-----------------------------------------------------------------
 int vytvor_server(int PORT);
 //-----------------------------------------------------------------
 int connect(char hostname[],int PORT);
@@ -23,8 +25,8 @@ void send_data(int socket, char len[]);
 //-----------------------------------------------------------------
 void send_img(int socket, IplImage *img,int kvalita);
 //-----------------------------------------------------------------
-void gafuso_recv_array(int socket, char prijem[][char_for_array]);
+int gafuso_recv_array(int socket, char prijem[][char_for_array],unsigned int size);
 //-----------------------------------------------------------------
-void gafuso_send_array(int socket, char odosli[][char_for_array],int pocet_dat);
+void gafuso_send_array(int socket, char odosli[][char_for_array],unsigned int size);
 //-----------------------------------------------------------------
 #endif

@@ -12,9 +12,3 @@ void precitaj_text(char text[]){
 	system(sys_text);
 }
 //----------------------------------------------------------
-/*void reset_atmega(){
-	GPIO_open(157,1);
-	GPIO_write(157,0);
-	GPIO_write(157,1);
-	GPIO_close(157);
-}*/

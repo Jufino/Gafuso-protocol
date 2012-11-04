@@ -1,15 +1,16 @@
 #include "libsocket.h"  
 //----------------------------------------------------------
-void quit(char* msg,int retval){
+void quit(char* msg){
 	fprintf(stderr,"%s\n", msg);
-	exit(retval);
+	exit(1);
 }
 //------------------------------------------------------------------
 int vytvor_server(int PORT){
-  int clientsock,serversock;
-  struct sockaddr_in server;	
-  if ((serversock = socket(PF_INET, SOCK_STREAM, 0)) == -1) {             
-		quit("socket() failed", 1);
+  	int clientsock,serversock;
+  	struct sockaddr_in server;
+  	struct timeval tv;	
+  	if ((serversock = socket(PF_INET, SOCK_STREAM, 0)) == -1) {             
+		quit("socket() failed");
 	}    	
 	/* setup server's IP and port */                                        
 	memset(&server, 0, sizeof(server));                                     
@@ -17,31 +18,35 @@ int vytvor_server(int PORT){
 	server.sin_port = htons(PORT);
 	server.sin_addr.s_addr = INADDR_ANY;                                    
                        
-
 	if (bind(serversock, (struct sockaddr *)&server, sizeof(server)) == -1) {     
-		quit("bind() failed", 1);                                       
+		quit("bind() failed");                                       
 	}     
 	
 	/* wait for connection */                                               
 	if (listen(serversock, 10) == -1) {                                     
-		quit("listen() failed.", 1);                                    
+		quit("listen() failed.");                                    
 	}                                                                       
 
 	printf("Waiting for connection on port %d\n", PORT);
 
 	/* accept a client */                                                   
 	if ((clientsock = accept(serversock, NULL, NULL)) == -1) {              
-		quit("accept() failed", 1);                                     
+		quit("accept() failed");                                     
 	}
-	printf("Connection open on port %d\n", PORT); 
+	printf("Connection open on port %d\n", PORT);
+	//nastavuje timeout 
+        tv.tv_sec = 0;
+        tv.tv_usec = recv_timeout*1000;
+        setsockopt(clientsock, SOL_SOCKET, SO_RCVTIMEO, (char *)&tv,  sizeof tv);
+	//-----------------
 	return clientsock;
 }
 //--------------------------------------------------------------------------
 int connect(char hostname[],int PORT){
-	int	sd;
+	int sd;
 	struct sockaddr_in pin;
 	struct hostent *hp;
-
+	struct timeval tv;
 	/*skusi vyhladat hostovaci server */
 	if ((hp = gethostbyname(hostname)) == 0) {
 		perror("gethostbyname");
@@ -65,7 +70,12 @@ int connect(char hostname[],int PORT){
 		perror("connect");
 		exit(1);
 	}
-  return sd;
+	//nastavuje timeout
+        tv.tv_sec = 0;
+        tv.tv_usec = recv_timeout*1000;
+        setsockopt(sd, SOL_SOCKET, SO_RCVTIMEO, (char *)&tv,  sizeof tv);
+	//----------------------------------
+  	return sd;
 }
 //----------------------------------------------------------------
 void send_data(int socket, char len[])
@@ -85,16 +95,21 @@ void send_img(int socket, IplImage *img,int kvalita)
         buff.clear();
 }
 //-----------------------------------------------------------------
-void gafuso_recv_array(int socket, char prijem[][char_for_array]){
-  	char recvdata[1000000];
-	recv(socket, recvdata, 1000000, 0);
-	gafuso_decode(prijem,recvdata);
+int gafuso_recv_array(int socket, char prijem[][char_for_array],unsigned int size){
+
+  	char recvdata[size*char_for_array+size+1];
+	recv(socket, recvdata,(size*char_for_array+size), 0);
+	if(errno != EAGAIN){
+		return gafuso_decode(prijem,recvdata);
+	}
+	else{
+		return (-1);
+	}
 }
 //-----------------------------------------------------------------
-void gafuso_send_array(int socket, char odosli[][char_for_array],int pocet_dat)
-{
-	char data_vystup[100000];
-	gafuso_code(data_vystup,odosli,pocet_dat);
+void gafuso_send_array(int socket, char odosli[][char_for_array],unsigned int size){
+	char data_vystup[size*char_for_array+size+1];
+	gafuso_code(data_vystup,odosli,size);
 	send_data(socket,data_vystup);
 }
 //-----------------------------------------------------------------

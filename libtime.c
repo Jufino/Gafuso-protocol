@@ -1,13 +1,10 @@
 //-----------------------------------------------------------
 #include "libtime.h"
 //-----------------------------------------------------------
-int __nsleep(const struct timespec *req, struct timespec *rem)
+void nsleep(const struct timespec *req, struct timespec *rem)
 {
     struct timespec temp_rem;
-    if(nanosleep(req,rem)==-1)
-        __nsleep(rem,&temp_rem);
-    else
-        return 1;
+    if(nanosleep(req,rem)==-1)	nsleep(rem,&temp_rem);
 }
 //-----------------------------------------------------------
 int msleep(unsigned long milisec)
@@ -17,7 +14,7 @@ int msleep(unsigned long milisec)
     milisec=milisec-(sec*1000);
     req.tv_sec=sec;
     req.tv_nsec=milisec*1000000L;
-    __nsleep(&req,&rem);
+    nsleep(&req,&rem);
     return 1;
 }
 //-----------------------------------------------------------

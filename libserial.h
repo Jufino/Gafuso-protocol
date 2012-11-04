@@ -8,7 +8,6 @@
 #include <time.h>   // time calls
 #include <errno.h>
 #include <stdio.h>
-#include "libprotocol.h"
 #ifndef char_for_array
   #define char_for_array 10
 #endif
@@ -19,9 +18,4 @@ void close_serial(int port);
 //-----------------------------------------
 void write_serial(int port,char data[]);
 //------------------------------------------
-void send_data_serial(int port, char (*data_vstup)[char_for_array],int pocet_dat);
-//------------------------------------------
-void receive_data_serial(int port, char (*prijem)[char_for_array]);
-//------------------------------------------
-
 #endif
