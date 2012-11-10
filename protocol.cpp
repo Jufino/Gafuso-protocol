@@ -40,7 +40,7 @@ while(zap){
         memset(&prijem_serial, 0, sizeof(prijem_serial));
 
 //-----------------------------------------------------
-	gafuso_recv_array(clientsock, data_prijem);     //data zo socketu
+	gafuso_recv_array(clientsock, data_prijem,10);     //data zo socketu
 //-----------------------------------------------------------
 	if (strcmp(data_prijem[0], "data") == 0){
 		//control string

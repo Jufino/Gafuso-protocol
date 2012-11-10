@@ -85,20 +85,26 @@ void send_data(int socket, char len[])
 //----------------------------------------------------------------
 void send_img(int socket, IplImage *img,int kvalita)
 {
-        vector<unsigned char> buff;
-	vector<int> param = vector<int>(2);
-      	param[0] = CV_IMWRITE_JPEG_QUALITY;
-      	param[1] = kvalita;
-        Mat M = Mat(img);
-        imencode(".jpg", M, buff, param);
-  	send(socket, &buff[0], buff.size(), 0);
-        buff.clear();
+		vector<unsigned char> buff;
+		vector<int> param = vector<int>(2);
+      		param[0] = CV_IMWRITE_JPEG_QUALITY;
+      		param[1] = kvalita;        
+		Mat M = Mat(img);
+        	imencode(".jpg", M, buff, param);
+//		char len[10];
+//		sprintf(len, "%.8d", buff.size());
+//		send(socket,len,8,0);
+//		char recvdat[2];
+//		recv(socket,recvdat,2,0);
+		send(socket, &buff[0], buff.size(),0);
+        	buff.clear();
 }
 //-----------------------------------------------------------------
 int gafuso_recv_array(int socket, char prijem[][char_for_array],unsigned int size){
 
   	char recvdata[size*char_for_array+size+1];
 	recv(socket, recvdata,(size*char_for_array+size), 0);
+//	read(socket,recvdata,(size*char_for_array+size));
 	if(errno != EAGAIN){
 		return gafuso_decode(prijem,recvdata);
 	}

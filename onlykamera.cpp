@@ -32,12 +32,15 @@ int main(void)
 		for(int vymaz=0;vymaz != 15;vymaz++){
       			memset(&data[vymaz][0], 0, sizeof(data[vymaz]));
   		}
-    		gafuso_recv_array(clientsock,data);       
+    		int dlzka = gafuso_recv_array(clientsock,data,3);       
 //-----------------------------------------------------------------------------
-        	if(strcmp(data[0], "img") == 0){
+		if (dlzka != -1){
+//		printf("%s\n",data[0]);
+		if(strcmp(data[0], "img")== 0){
 			send_img(clientsock,img,80);
 		} 
 		img = cvQueryFrame(camera);
+		}
 	}
 	close(clientsock);
 	return 0;

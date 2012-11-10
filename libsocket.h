@@ -13,7 +13,7 @@
 #include <cxcore.h>
 #include "libprotocol.h"
 
-#define recv_timeout 50
+#define recv_timeout 1000
 
 using namespace cv;
 //----------------------------------------------------------------- 
