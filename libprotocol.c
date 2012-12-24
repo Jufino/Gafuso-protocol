@@ -19,10 +19,8 @@ int gafuso_decode(char (*data_vystup)[char_for_array],char data_vstup[]){
 	unsigned int posun=1;
 	unsigned int size=1;
 	int poc_dat=data_vstup[0];
-	printf("%d\n",poc_dat);
 	for(unsigned int i=0;i < data_vstup[0];i++){
 		unsigned int poc_znakov=data_vstup[posun];
-		printf("%d\n",poc_znakov);
 		size+=poc_znakov;
 		if (size <= strlen(data_vstup)){
 			posun++;
