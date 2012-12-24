@@ -13,8 +13,8 @@
 #include <cxcore.h>
 #include "libprotocol.h"
 
-#define recv_timeout 1000
-
+#define recv_timeout 400
+#define send_timeout 400
 using namespace cv;
 //----------------------------------------------------------------- 
 int vytvor_server(int PORT);

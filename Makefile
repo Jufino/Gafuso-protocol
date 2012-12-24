@@ -20,6 +20,9 @@ kamera: kamera.cpp
 onlykamera: onlykamera.cpp
 	$(CPP) onlykamera.cpp libtime.o libprotocol.o libsocket.o libopencv.o libfile.o -o onlykamera $(OFLAGS)
 
+onlykameramob: onlykameramob.cpp
+	$(CPP) onlykameramob.cpp libtime.o libprotocol.o libsocket.o libopencv.o libfile.o -o onlykameramob $(OFLAGS)
+
 libtime.o: libtime.c
 	$(CPP) -c libtime.c
 

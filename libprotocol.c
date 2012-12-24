@@ -1,6 +1,6 @@
 #include "libprotocol.h"
 //-----------------------------------------------------------
-int gafuso_code(char data_vystup[],char (*data_vstup)[char_for_array],int size){
+unsigned int gafuso_code(char data_vystup[],char (*data_vstup)[char_for_array],unsigned int size){
 	unsigned int posun = 0;
 	data_vystup[posun] = size;
 	posun++;
@@ -16,24 +16,25 @@ int gafuso_code(char data_vystup[],char (*data_vstup)[char_for_array],int size){
 }
 //-----------------------------------------------------------
 int gafuso_decode(char (*data_vystup)[char_for_array],char data_vstup[]){
-	int posun=0;
-	int size=0;
-	int poc_znakov=0;
-	size=data_vstup[posun];
-	posun++;
-//	printf("size = %d\n",size);
-	if(size < sizeof(data_vstup)/sizeof(char)){
-		for(int i=0;i < size;i++){
-			poc_znakov=data_vstup[posun];
+	unsigned int posun=1;
+	unsigned int size=1;
+	int poc_dat=data_vstup[0];
+	printf("%d\n",poc_dat);
+	for(unsigned int i=0;i < data_vstup[0];i++){
+		unsigned int poc_znakov=data_vstup[posun];
+		printf("%d\n",poc_znakov);
+		size+=poc_znakov;
+		if (size <= strlen(data_vstup)){
 			posun++;
-//			printf("poc_znakov %d,%d\n",i,poc_znakov);
-			for(int z=0;z<poc_znakov;z++){
+			for(unsigned int z=0;z<poc_znakov;z++){
 				data_vystup[i][z] = data_vstup[posun];
 				posun++;
 			}
 		}
-		return size;
+		else{	
+			poc_dat = -1;
+			break;
+		}
 	}
-	else	return -1;
-
+	return poc_dat;
 }

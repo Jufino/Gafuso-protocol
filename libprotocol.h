@@ -20,7 +20,7 @@
 //vstup vo forme multiarray, size = velkost pola
 //zakoduj(datay,arr,sizeof(arr)/sizeof(arr[0]));	//zakoduje arr do datay = data na odosielanie
 //-----------------------------------------------------------
-int gafuso_code(char data_vystup[],char (*data_vstup)[char_for_array],int size);
+unsigned int gafuso_code(char data_vystup[],char (*data_vstup)[char_for_array],unsigned int size);
 //-----------------------------------------------------------
 //data_vystup je multiarray = vystupne rozkodovane data
 //data_vstup je char = zakodovane data v klastrovom protokole

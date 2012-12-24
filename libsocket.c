@@ -9,7 +9,7 @@ int vytvor_server(int PORT){
   	int clientsock,serversock;
   	struct sockaddr_in server;
   	struct timeval tv;	
-  	if ((serversock = socket(PF_INET, SOCK_STREAM, 0)) == -1) {             
+  	if ((serversock = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP)) == -1) {             
 		quit("socket() failed");
 	}    	
 	/* setup server's IP and port */                                        
@@ -35,9 +35,9 @@ int vytvor_server(int PORT){
 	}
 	printf("Connection open on port %d\n", PORT);
 	//nastavuje timeout 
-        tv.tv_sec = 0;
-        tv.tv_usec = recv_timeout*1000;
-        setsockopt(clientsock, SOL_SOCKET, SO_RCVTIMEO, (char *)&tv,  sizeof tv);
+//        tv.tv_sec = 0;
+//        tv.tv_usec = recv_timeout*1000;
+//        setsockopt(clientsock, SOL_SOCKET, SO_RCVTIMEO, (char *)&tv,  sizeof tv);
 	//-----------------
 	return clientsock;
 }
@@ -71,9 +71,9 @@ int connect(char hostname[],int PORT){
 		exit(1);
 	}
 	//nastavuje timeout
-        tv.tv_sec = 0;
-        tv.tv_usec = recv_timeout*1000;
-        setsockopt(sd, SOL_SOCKET, SO_RCVTIMEO, (char *)&tv,  sizeof tv);
+ //       tv.tv_sec = 0;
+ //       tv.tv_usec = recv_timeout*1000;
+ //       setsockopt(sd, SOL_SOCKET, SO_RCVTIMEO, (char *)&tv,  sizeof tv);
 	//----------------------------------
   	return sd;
 }
@@ -85,26 +85,23 @@ void send_data(int socket, char len[])
 //----------------------------------------------------------------
 void send_img(int socket, IplImage *img,int kvalita)
 {
-		vector<unsigned char> buff;
-		vector<int> param = vector<int>(2);
-      		param[0] = CV_IMWRITE_JPEG_QUALITY;
-      		param[1] = kvalita;        
-		Mat M = Mat(img);
-        	imencode(".jpg", M, buff, param);
-//		char len[10];
-//		sprintf(len, "%.8d", buff.size());
-//		send(socket,len,8,0);
-//		char recvdat[2];
-//		recv(socket,recvdat,2,0);
-		send(socket, &buff[0], buff.size(),0);
-        	buff.clear();
+        vector<unsigned char> buff;
+	vector<int> param = vector<int>(2);
+      	param[0] = CV_IMWRITE_JPEG_QUALITY;
+      	param[1] = kvalita;        
+	Mat M = Mat(img);
+        imencode(".jpg", M, buff, param);
+	char len[10];
+	sprintf(len, "%.8d", buff.size());
+	send(socket,len,8,0);
+  	send(socket, &buff[0], buff.size(), 0);
+        buff.clear();
 }
 //-----------------------------------------------------------------
 int gafuso_recv_array(int socket, char prijem[][char_for_array],unsigned int size){
 
   	char recvdata[size*char_for_array+size+1];
 	recv(socket, recvdata,(size*char_for_array+size), 0);
-//	read(socket,recvdata,(size*char_for_array+size));
 	if(errno != EAGAIN){
 		return gafuso_decode(prijem,recvdata);
 	}
