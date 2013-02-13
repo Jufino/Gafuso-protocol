@@ -1,5 +1,67 @@
 #include "libsocket.h"  
 //----------------------------------------------------------
+char * gafuso_send_buffer;
+unsigned long int size_send_buffer=0;
+void add_to_gafuso(char *data_to_add){
+	int x;
+	char *size = (char*)malloc(sizeof(char)*11);
+	char *data_gafuso_add = (char*) realloc (gafuso_send_buffer, size_send_buffer + strlen(data_to_add) * sizeof(char) + 2);
+	sprintf(size,"%.7d",strlen(data_to_add));	
+	for(x=0;x<strlen(data_to_add);x++){
+        	*(data_gafuso_add + size_send_buffer)= *(size + x);
+        	size_recv_buffer++;
+        }
+	for(x=0;x<strlen(data_to_add);x++){	
+		*(data_gafuso_add + size_send_buffer)= *(data_to_add + x);
+		size_recv_buffer++;
+	}
+	*(data_gafuso_add + size_send_buffer) = '\0';
+	gafuso_send_buffer = data_gafuso_add;
+	free(data_gafuso_add);
+	free(size);
+}
+void delete_from_gafuso(){
+	i=0;
+	free(data_gafuso);
+}
+void send_from_gafuso(int socket){
+	char *size = (char*)malloc(sizeof(char)*11);
+	sprintf(size,"%.10d",size_send_buffer);
+	send_data(socket,size_send_buffer);
+	send_data(socket,gafuso_send_buffer);
+}
+
+char *gafuso_recv_buffer;
+unsigned long int size_recv_buffer=0;
+void receive_from_gafuso(int socket){
+	char *size = (char*)malloc(sizeof(char)*9);
+	recv(socket,size,8,0);
+	gafuso_recv_buffer = (char*) malloc(atoi(size));
+	recv(socket,gafuso_recv_buffer,atoi(size),0);
+	free(size);
+}
+void gafuso_from_start(char* data_from_recv){
+        char *size = (char*)malloc(sizeof(char)*9);
+	size_recv_buffer=0;
+        for(unsigned char i=0;i<8;i++)  *(size+i)= *(gafuso_recv_buffer+i+size_recv_buffer);
+        size_recv_buffer+=8;
+        data_from_recv = (char*)malloc(sizeof(char)*atoi(size));
+        int x = 0;
+        for(int i=size_recv_buffer;i<(size_recv_buffer+atoi(size));i++){
+                *(data_from_recv+x) = *(gafuso_recv_buffer+i)
+        }
+
+}
+void data_from_recv(char* data_from_recv){
+	char *size = (char*)malloc(sizeof(char)*9);
+	for(unsigned char i=0;i<8;i++)	*(size+i)= *(gafuso_recv_buffer+i+size_recv_buffer);
+	size_recv_buffer+=8;
+	data_from_recv = (char*)malloc(sizeof(char)*atoi(size));
+	int x = 0;
+	for(int i=size_recv_buffer;i<(size_recv_buffer+atoi(size));i++)	*(data_from_recv+x) = *(gafuso_recv_buffer+i)
+}
+
+
 void quit(char* msg){
 	fprintf(stderr,"%s\n", msg);
 	exit(1);

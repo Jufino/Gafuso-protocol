@@ -27,7 +27,7 @@ test_ciara: test_ciara.cpp
 	$(CPP) test_ciara.cpp libtime.o libprotocol.o libsocket.o libopencv.o libfile.o -o test_ciara $(OFLAGS)
 
 ciara: ciara.cpp
-	$(CPP) ciara.cpp libtime.o libprotocol.o libopencv.o libfile.o libfile.o libserial.o  -o ciara $(OFLAGS)
+	$(CPP) ciara.cpp libtime.o libprotocol.o libopencv.o libfile.o libserial.o  -o ciara $(OFLAGS)
 
 
 libtime.o: libtime.c
