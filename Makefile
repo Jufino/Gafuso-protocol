@@ -6,29 +6,25 @@ OFLAGS=`pkg-config --libs --cflags opencv`
 
 all:protocol 
 
-lib: libtime.o libspec.o libprotocol.o libsocket.o libserial.o libopencv.o libfile.o gpio.o
-
-protocol:protocol.cpp
-	$(CPP) protocol.cpp libtime.o libspec.o libprotocol.o libsocket.o libserial.o gpio.o -o protocol $(OFLAGS)
+lib: libtime.o libspec.o gafuso.o libserial.o libopencv.o libfile.o gpio.o
 
 test:test.cpp
-	$(CPP) test.cpp libtime.o libprotocol.o libsocket.o -o test $(OFLAGS)
+	$(CPP) test.cpp libtime.o libspec.o gafuso.o libserial.o gpio.o -o test $(OFLAGS)
 
-kamera: kamera.cpp
-	$(CPP) kamera.cpp libtime.o libprotocol.o libsocket.o libopencv.o libfile.o -o kamera $(OFLAGS)
+protocol:protocol.cpp
+	$(CPP) protocol.cpp libtime.o libspec.o gafuso.o libserial.o gpio.o -o protocol $(OFLAGS)
+
+test:test.cpp
+	$(CPP) test.cpp libtime.o gafuso.o -o test $(OFLAGS)
 
 onlykamera: onlykamera.cpp
-	$(CPP) onlykamera.cpp libtime.o libprotocol.o libsocket.o libopencv.o libfile.o -o onlykamera $(OFLAGS)
-
-onlykameramob: onlykameramob.cpp
-	$(CPP) onlykameramob.cpp libtime.o libprotocol.o libsocket.o libopencv.o libfile.o -o onlykameramob $(OFLAGS)
+	$(CPP) onlykamera.cpp libtime.o gafuso.o libopencv.o libfile.o -o onlykamera $(OFLAGS)
 
 test_ciara: test_ciara.cpp
-	$(CPP) test_ciara.cpp libtime.o libprotocol.o libsocket.o libopencv.o libfile.o -o test_ciara $(OFLAGS)
+	$(CPP) test_ciara.cpp libtime.o gafuso.o libopencv.o libfile.o -o test_ciara $(OFLAGS)
 
 ciara: ciara.cpp
-	$(CPP) ciara.cpp libtime.o libprotocol.o libopencv.o libfile.o libserial.o  -o ciara $(OFLAGS)
-
+	$(CPP) ciara.cpp libtime.o gafuso.o libopencv.o libfile.o libserial.o  -o ciara $(OFLAGS)
 
 libtime.o: libtime.c
 	$(CPP) -c libtime.c
@@ -36,11 +32,8 @@ libtime.o: libtime.c
 libspec.o: libspec.c
 	$(CPP) -c libspec.c
 
-libprotocol.o: libprotocol.c
-	$(CPP) -c libprotocol.c
-
-libsocket.o: libsocket.c
-	$(CPP) -c libsocket.c $(OFLAGS)
+gafuso.o: gafuso.c
+	$(CPP) -c gafuso.c
 
 libserial.o: libserial.c
 	$(CPP) -c libserial.c
@@ -57,8 +50,7 @@ gpio.o: gpio.c
 remove_lib:
 	rm libtime.o
 	rm libspec.o
-	rm libprotocol.o
-	rm libsocket.o
+	rm gafuso.o
 	rm libserial.o
 	rm libopencv.o
 	rm libfile.o 

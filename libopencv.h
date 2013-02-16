@@ -5,8 +5,6 @@
 #include <highgui.h>
 #include <cxcore.h>
 
-#include "libprotocol.h"
-#include "libsocket.h"
 #define vyska_snimania 90
 #define sirka_ciary 150
 #define offset_y 50
