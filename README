@@ -1,18 +1,1 @@
-build protocol
-	$ make
-run
-	$ ./protocol
-if you run protocol, you create server and if you test please download client 
-http://www.prianicslovakia.tym.sk/test_protokol.rar
 
-if you can test serial protocol
-
-build
-	$ make test_serial
-run
-	$ ./test_serial
-if you run test_serial you create master server and if you test you must use library, please download
-www.prianicslovakia.tym.sk/test_AVR_protokol
-
-library c# - www.prianicslovakia.tym.sk/libprotocol.cs
-library codevision - www.prianicslovakia.tym.sk/libprotocol.c

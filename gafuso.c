@@ -7,15 +7,15 @@ void quit(char* msg){
 //------------------------------------------------------------------
 int GafusoCreate(int PORT){
   	int clientsock,serversock;
-  	struct sockaddr_in server;
-  	struct timeval tv;	
+  	struct sockaddr_in server;	
   	if ((serversock = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP)) == -1)	quit("socket() failed");
 	memset(&server, 0, sizeof(server));                                     
 	server.sin_family = AF_INET;                                            
 	server.sin_port = htons(PORT);
 	server.sin_addr.s_addr = INADDR_ANY;                                         	
 	if (bind(serversock, (struct sockaddr *)&server, sizeof(server)) == -1)	quit("bind() failed");            
-	if (listen(serversock, 10) == -1) 					quit("listen() failed.");                            printf("Gafuso wait at port %d\n", PORT);                           	
+	if (listen(serversock, 10) == -1) 					quit("listen() failed.");
+	printf("Gafuso wait at port %d\n", PORT);                           	
 	if ((clientsock = accept(serversock, NULL, NULL)) == -1) 		quit("accept() failed");
 	printf("Gafuso connect at port %d\n", PORT);
 	return clientsock;
@@ -25,7 +25,6 @@ int GafusoConnect(char hostname[],int PORT){
 	int sd;
 	struct sockaddr_in pin;
 	struct hostent *hp;
-	struct timeval tv;
 	if ((hp = gethostbyname(hostname)) == 0)			quit("gethostbyname");
 	memset(&pin, 0, sizeof(pin));
 	pin.sin_family = AF_INET;
@@ -40,13 +39,11 @@ void GafusoClose(int PORT){
 	close(PORT);
 }
 //----------------------------------------------------------------
-void send_data(int socket, char len[])
-{
+void send_data(int socket, char len[]){
 	send(socket, len, strlen(len), 0);
 }
 //----------------------------------------------------------------
-void GafusoSendImg(int socket, IplImage *img,int kvalita)
-{
+void GafusoSendImg(int socket, IplImage *img,int kvalita){
         vector<unsigned char> buff;
 	vector<int> param = vector<int>(2);
       	param[0] = CV_IMWRITE_JPEG_QUALITY;
@@ -74,16 +71,13 @@ void GafusoAdd(char *data_to_add){
 	gafuso_send_buffer = data_gafuso_add;
 }
 //--------------------------------------------------------------------
-void GafusoDel(void){
-	size_send_buffer=0;
-	gafuso_send_buffer=NULL;
-}
-//--------------------------------------------------------------------
 void GafusoSend(int socket){
 	char *size = (char*)malloc(sizeof(char)*11);
 	sprintf(size,"%.10d",size_send_buffer);
 	send_data(socket,size);
 	send_data(socket,gafuso_send_buffer);
+	size_send_buffer = 0;
+	gafuso_send_buffer = NULL;
 }
 //--------------------------------------------------------------------
 void GafusoRecv(int socket){
