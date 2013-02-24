@@ -17,13 +17,15 @@ int main(void)
 	CvCapture* camera = cvCaptureFromCAM(0);
 	cvSetCaptureProperty( camera, CV_CAP_PROP_FRAME_WIDTH,320);
 	cvSetCaptureProperty( camera, CV_CAP_PROP_FRAME_HEIGHT, 240);
-	int clientsock = gafuso_create(1212);
+	int clientsock = GafusoCreate(1212);
 	IplImage  *img = cvQueryFrame(camera);       
 	while(1){  
-    		gafuso_recv(clientsock,data);       
-		if(strcmp(gafuso_load(), "img") == 0)	send_img(clientsock,img,50);
+    		GafusoRecv(clientsock);       
+		if(strcmp(GafusoLoad(), "img") == 0){
+			GafusoSendImg(clientsock,img,50);
+		}
 		while (NULL == (img = cvQueryFrame(camera))) printf("problem\n");
 	}
-	gafuso_close(clientsock);
+	GafusoClose(clientsock);
 	return 0;
 }

@@ -8,17 +8,21 @@ using namespace std;
 #include "gpio.h"
 //-----------------------------------------------------------
 int main(void){
- 	int clientsock = gafuso_create(1213);
-	gafuso_add("100");
-     	gafuso_add("200");
-	gafuso_add("400");
-	gafuso_send(clientsock);
+ 	int clientsock = GafusoCreate(1213);
+//	gafuso_add("100");
+//     	gafuso_add("200");
+//	gafuso_add("400");
+//	gafuso_send(clientsock);
+	while(1){	
+		GafusoRecv(clientsock);
+		printf("%s\n",GafusoLoad());
+	}
 //	gafuso_recv(clientsock);
 //	char *data = gafuso_load();
 //	printf("%s\n",data);
 //	data = gafuso_load();
 //	printf("%s\n",data);
-	gafuso_close(clientsock);
+	GafusoClose(clientsock);
 	return 0;
 }
 

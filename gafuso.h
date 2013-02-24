@@ -10,23 +10,29 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include <cv.h>
+#include <highgui.h>
+#include <cxcore.h>
+using namespace cv;
 //------------------------------------------------------------------------------------- 
-int gafuso_create(int PORT);
+int GafusoCreate(int PORT);
 //-------------------------------------------------------------------------------------
-void gafuso_close(int PORT);
+void GafusoClose(int PORT);
 //-------------------------------------------------------------------------------------
-int gafuso_connect(char hostname[],int PORT);
+int GafusoConnect(char hostname[],int PORT);
 //-------------------------------------------------------------------------------------
-void gafuso_add(char *data_to_add);
+void GafusoAdd(char *data_to_add);
 //-------------------------------------------------------------------------------------
-void gafuso_del(void);
+void GafusoDel(void);
 //-------------------------------------------------------------------------------------
-void gafuso_send(int socket);
+void GafusoSend(int socket);
 //-------------------------------------------------------------------------------------
-void gafuso_recv(int socket);
+void GafusoRecv(int socket);
 //-------------------------------------------------------------------------------------
-char *gafuso_load_first(void);
+char *GafusoLoadFirst(void);
 //-------------------------------------------------------------------------------------
-char *gafuso_load(void);
+char *GafusoLoad(void);
+//-------------------------------------------------------------------------------------
+void GafusoSendImg(int socket,IplImage *img, int kvalita);
 //-------------------------------------------------------------------------------------
 #endif

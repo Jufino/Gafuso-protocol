@@ -33,7 +33,7 @@ libspec.o: libspec.c
 	$(CPP) -c libspec.c
 
 gafuso.o: gafuso.c
-	$(CPP) -c gafuso.c
+	$(CPP) -c gafuso.c $(OFLAGS)
 
 libserial.o: libserial.c
 	$(CPP) -c libserial.c
