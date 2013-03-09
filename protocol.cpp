@@ -6,28 +6,30 @@
 using namespace std;
 #include "gafuso.h";
 #include "libserial.h";
+
 //-----------------------------------------------------------
 int main(void)
 {
-  	int port_int = open_serial("/dev/ttyO2",B115200); 
+  	int port_int = SerialOpen("/dev/ttyACM1",B9600); 
  	int clientsock = GafusoCreate(1213);
 	int zap = 1;
-	char prijem_serial[128];
+	char *prijem;
+	char data[10];
 	while(zap){
-        	memset(&prijem_serial, 0, sizeof(prijem_serial));
-		GafusoCreate(clientsock);
-		if (strcmp(GafusoFirstLoad(), "data") == 0){
-			write_serial(port_int,GafusoFirstLoad());
-			write_serial(port_int,"\n");
-			int pocet = atoi(GafusoLoad());
-			read(port_int, prijem_serial,atoi(pocet+10);  
-			for(unsigned int o=0;o!=pocet;o++){	
-				char *data = NULL;
-				sprintf(data,"%d",prijem_serial[o]);
-				GafusoAdd(data);
+		GafusoRecv(clientsock);
+//		printf("protocol - %s\n",GafusoLoad('f'));
+		if (strcmp(GafusoLoad('f'), "data") == 0){
+//			printf("OK");
+			SerialWrite(port_int,"data\n");
+			prijem = SerialRead(port_int,28);
+			for(unsigned int o=0;o<28;o++){	
+				sprintf(data,"%d",prijem[o]);
+				GafusoAdd(data,strlen(data));
 			}		
 			GafusoSend(clientsock);
+			GafusoBuffDel();
 		}
+/*
 		else {
                 	write_serial(port_int,GafusoFirstLoad());
                 	write_serial(port_int,"\n");
@@ -36,6 +38,7 @@ int main(void)
 				write_serial(port_int,"\n");
 			}
 		}
+*/
 	}
  GafusoClose(clientsock);
  return 0;

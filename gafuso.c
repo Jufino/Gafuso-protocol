@@ -8,7 +8,8 @@ void quit(char* msg){
 int GafusoCreate(int PORT){
   	int clientsock,serversock;
   	struct sockaddr_in server;	
-  	if ((serversock = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP)) == -1)	quit("socket() failed");
+//  	if ((serversock = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP)) == -1)	quit("socket() failed");
+	if ((serversock = socket(AF_INET, SOCK_STREAM,0)) == -1)     quit("socket() failed");
 	memset(&server, 0, sizeof(server));                                     
 	server.sin_family = AF_INET;                                            
 	server.sin_port = htons(PORT);
@@ -39,10 +40,6 @@ void GafusoClose(int PORT){
 	close(PORT);
 }
 //----------------------------------------------------------------
-void send_data(int socket, char len[]){
-	send(socket, len, strlen(len), 0);
-}
-//----------------------------------------------------------------
 void GafusoSendImg(int socket, IplImage *img,int kvalita){
         vector<unsigned char> buff;
 	vector<int> param = vector<int>(2);
@@ -62,56 +59,48 @@ char *gafuso_recv_buffer;
 unsigned long int size_send_buffer=0;
 unsigned long int size_recv_buffer=0;
 //--------------------------------------------------------------------
-void GafusoAdd(char *data_to_add){
-	char *size = (char*)malloc(sizeof(char)*8); 
-	char *data_gafuso_add = (char*)realloc (gafuso_send_buffer, (size_send_buffer + strlen(data_to_add)+8) * sizeof(char));
-	sprintf(size,"%.7d",strlen(data_to_add));	
-	for(int x=0;x<strlen(size);x++)				*(data_gafuso_add + size_send_buffer++)= *(size + x);
-	for(int x=0;x<(sizeof(data_to_add)/sizeof(char));x++)	*(data_gafuso_add + size_send_buffer++)= *(data_to_add + x);
+void GafusoAdd(char data_to_add[],int length){
+	char size[8];
+	char *data_gafuso_add;
+	if (size_send_buffer == 0)	data_gafuso_add = (char*)malloc((length+7)*sizeof(char));
+	else				data_gafuso_add = (char*)realloc (gafuso_send_buffer,(length+7+size_send_buffer)*sizeof(char));
+	sprintf(size,"%.7d",length);	     
+	for(int x=0;x<strlen(size);x++)		*(data_gafuso_add + size_send_buffer++)= *(size + x);
+	for(int x=0;x<length;x++)		*(data_gafuso_add + size_send_buffer++)= *(data_to_add + x);
 	gafuso_send_buffer = data_gafuso_add;
 }
 //--------------------------------------------------------------------
 void GafusoSend(int socket){
-	char *size = (char*)malloc(sizeof(char)*11);
+	char size[12];
 	sprintf(size,"%.10d",size_send_buffer);
-	send_data(socket,size);
-	send_data(socket,gafuso_send_buffer);
+	char *buffer_send = (char*)malloc((atoi(size)+10)*sizeof(char));	
+	sprintf(buffer_send,"%s%s",size,gafuso_send_buffer);
+        send(socket, buffer_send, size_send_buffer+10, 0);
+//	free(buffer_send);
+}
+void GafusoBuffDel(void){
 	size_send_buffer = 0;
-	gafuso_send_buffer = NULL;
+	gafuso_send_buffer=NULL;
 }
 //--------------------------------------------------------------------
 void GafusoRecv(int socket){
-	char *size = (char*)malloc(10*sizeof(char)) ;
+	char size[12];
 	recv(socket,size,10,0);
+	char *gafuso_recv_buffer_add = (char*)malloc(sizeof(char)*atoi(size));
 	size_recv_buffer = 0; 
-	gafuso_recv_buffer = NULL;
-	gafuso_recv_buffer = (char*) malloc(atoi(size)*sizeof(char));
-	recv(socket,gafuso_recv_buffer,atoi(size),0);
+	recv(socket,gafuso_recv_buffer_add,atoi(size),0);
+	gafuso_recv_buffer = gafuso_recv_buffer_add;
 }
-//--------------------------------------------------------------------
-char *GafusoLoadFirst(void){
-        char *size = (char*)malloc(sizeof(char)*8);
-	size_recv_buffer=0;
-        for(unsigned char i=0;i<7;i++)	*(size+i)= *(gafuso_recv_buffer+size_recv_buffer++);
-        char *data_from_recv = (char*)malloc(sizeof(char)*9);
-        data_from_recv = (char*)malloc(sizeof(char)*(atoi(size)+1));
-	int x = 0;
-        for(int i=size_recv_buffer;i<(size_recv_buffer+atoi(size));i++)	*(data_from_recv+x++) = *(gafuso_recv_buffer+i);
-        size_recv_buffer+=atoi(size);
-	*(data_from_recv+x) = '\0';
-        return &data_from_recv[0];
+char *GafusoLoad(char mode){
+        char size[8];
+        if (mode == 'f')        size_recv_buffer=0;
+        for(unsigned char i=0;i<7;i++)  size[i] = *(gafuso_recv_buffer+size_recv_buffer++);
+        size[7] = '\0';
+        int SizeInt = atoi(size);
+        char *data_from_recv = (char*)malloc((SizeInt+1)*sizeof(char));
+        for(int i=0;i<SizeInt;i++)      *(data_from_recv+i) = *(gafuso_recv_buffer+(size_recv_buffer++));
+        *(data_from_recv+SizeInt) = '\0';
+  //      printf("%s\n",data_from_recv);
+        return data_from_recv;
 }
-//--------------------------------------------------------------------
-char *GafusoLoad(void){
-	char *size = (char*)malloc(sizeof(char)*8);
-        size_recv_buffer=0;
-        for(unsigned char i=0;i<7;i++)  *(size+i)= *(gafuso_recv_buffer+size_recv_buffer++);
-        char *data_from_recv = (char*)malloc(sizeof(char)*9);
-        data_from_recv = (char*)malloc(sizeof(char)*(atoi(size)+1));
-        int x = 0;
-        for(int i=size_recv_buffer;i<(size_recv_buffer+atoi(size));i++) *(data_from_recv+x++) = *(gafuso_recv_buffer+i);
-        size_recv_buffer+=atoi(size);
-        *(data_from_recv+x) = '\0';
-        return &data_from_recv[0];
-}
-//--------------------------------------------------------------------
+//-------------------------------------------------------------------

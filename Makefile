@@ -9,13 +9,10 @@ all:protocol
 lib: gafuso.o libserial.o libopencv.o
 
 send_gafuso:send_gafuso.cpp
-	$(CPP) send_gafuso.cpp gafuso.o libserial.o -o test $(OFLAGS)
+	$(CPP) send_gafuso.cpp gafuso.o libserial.o -o send_gafuso $(OFLAGS)
 
 protocol:protocol.cpp
 	$(CPP) protocol.cpp gafuso.o libserial.o -o protocol $(OFLAGS)
-
-test:test.cpp
-	$(CPP) test.cpp gafuso.o -o test $(OFLAGS)
 
 onlykamera: onlykamera.cpp
 	$(CPP) onlykamera.cpp gafuso.o libopencv.o -o onlykamera $(OFLAGS)

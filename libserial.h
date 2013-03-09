@@ -8,14 +8,15 @@
 #include <time.h>   // time calls
 #include <errno.h>
 #include <stdio.h>
-#ifndef char_for_array
-  #define char_for_array 10
-#endif
+#include <stdlib.h>
 //--------------------------------------------------------
-int open_serial(const char *port, speed_t speed);
+int SerialOpen(const char *port, speed_t speed);
 //-----------------------------------------
-void close_serial(int port);
+void SerialClose(int port);
 //-----------------------------------------
-void write_serial(int port,char data[]);
+void SerialWrite(int port,char data[]);
 //------------------------------------------
+char *SerialReadLine(int port, int max);
+//------------------------------------------
+char *SerialRead(int port,int pocet);
 #endif
