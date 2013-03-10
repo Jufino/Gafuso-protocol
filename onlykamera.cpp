@@ -21,7 +21,7 @@ int main(void)
 	IplImage  *img = cvQueryFrame(camera);       
 	while(1){  
     		GafusoRecv(clientsock);       
-		if(strcmp(GafusoLoad(), "img") == 0){
+		if(strcmp(GafusoLoad('f'), "img") == 0){
 			GafusoSendImg(clientsock,img,50);
 		}
 		while (NULL == (img = cvQueryFrame(camera))) printf("problem\n");

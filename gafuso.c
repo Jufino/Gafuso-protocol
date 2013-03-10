@@ -39,20 +39,6 @@ int GafusoConnect(char hostname[],int PORT){
 void GafusoClose(int PORT){
 	close(PORT);
 }
-//----------------------------------------------------------------
-void GafusoSendImg(int socket, IplImage *img,int kvalita){
-        vector<unsigned char> buff;
-	vector<int> param = vector<int>(2);
-      	param[0] = CV_IMWRITE_JPEG_QUALITY;
-      	param[1] = kvalita;        
-	Mat M = Mat(img);
-        imencode(".jpg", M, buff, param);
-	char len[10];
-	sprintf(len, "%.8d", buff.size());
-	send(socket,len,8,0);
-  	send(socket, &buff[0], buff.size(), 0);
-        buff.clear();
-}
 //-----------------------------------------------------------------
 char *gafuso_send_buffer;
 char *gafuso_recv_buffer;
@@ -73,34 +59,50 @@ void GafusoAdd(char data_to_add[],int length){
 void GafusoSend(int socket){
 	char size[12];
 	sprintf(size,"%.10d",size_send_buffer);
-	char *buffer_send = (char*)malloc((atoi(size)+10)*sizeof(char));	
+	char buffer_send[size_send_buffer+10];	
 	sprintf(buffer_send,"%s%s",size,gafuso_send_buffer);
         send(socket, buffer_send, size_send_buffer+10, 0);
-//	free(buffer_send);
 }
 void GafusoBuffDel(void){
 	size_send_buffer = 0;
 	gafuso_send_buffer=NULL;
 }
 //--------------------------------------------------------------------
+void GafusoSendImg(int socket, IplImage *img,int kvalita){
+        vector<unsigned char> buff;
+        vector<int> param = vector<int>(2);
+        param[0] = CV_IMWRITE_JPEG_QUALITY;
+        param[1] = kvalita;
+        Mat M = Mat(img);
+        imencode(".jpg", M, buff, param);
+//        GafusoAdd((char *)(&buff[0]),buff.size());
+        char size[12];
+        sprintf(size,"%.10d",buff.size());
+//	char buffer_send[buff.size()+10];
+   ///     sprintf(buffer_send,"%s%s",size,reinterpret_cast<char*>(buff.data()));
+	send(socket, size, 10, 0);
+	send(socket, &buff[0], buff.size(), 0);
+//      GafusoSend(socket);
+    //    GafusoBuffDel();
+        buff.clear();
+}
+//--------------------------------------------------------------------
 void GafusoRecv(int socket){
-	char size[12];
+	char size[10];
 	recv(socket,size,10,0);
-	char *gafuso_recv_buffer_add = (char*)malloc(sizeof(char)*atoi(size));
+	gafuso_recv_buffer= NULL;
+	gafuso_recv_buffer=(char*)malloc(sizeof(char)*atoi(size));
 	size_recv_buffer = 0; 
-	recv(socket,gafuso_recv_buffer_add,atoi(size),0);
-	gafuso_recv_buffer = gafuso_recv_buffer_add;
+	recv(socket,gafuso_recv_buffer,atoi(size),0);
 }
 char *GafusoLoad(char mode){
         char size[8];
         if (mode == 'f')        size_recv_buffer=0;
         for(unsigned char i=0;i<7;i++)  size[i] = *(gafuso_recv_buffer+size_recv_buffer++);
-        size[7] = '\0';
         int SizeInt = atoi(size);
         char *data_from_recv = (char*)malloc((SizeInt+1)*sizeof(char));
         for(int i=0;i<SizeInt;i++)      *(data_from_recv+i) = *(gafuso_recv_buffer+(size_recv_buffer++));
         *(data_from_recv+SizeInt) = '\0';
-  //      printf("%s\n",data_from_recv);
         return data_from_recv;
 }
 //-------------------------------------------------------------------
