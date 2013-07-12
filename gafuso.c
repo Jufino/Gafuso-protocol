@@ -99,7 +99,8 @@ char *GafusoLoad(char mode){
         char size[8];
         if (mode == 'f')        size_recv_buffer=0;
         for(unsigned char i=0;i<7;i++)  size[i] = *(gafuso_recv_buffer+size_recv_buffer++);
-        int SizeInt = atoi(size);
+        size[7] = '\0';
+	int SizeInt = atoi(size);
         char *data_from_recv = (char*)malloc((SizeInt+1)*sizeof(char));
         for(int i=0;i<SizeInt;i++)      *(data_from_recv+i) = *(gafuso_recv_buffer+(size_recv_buffer++));
         *(data_from_recv+SizeInt) = '\0';
