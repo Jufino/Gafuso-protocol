@@ -1,4 +1,4 @@
-#include "gafuso.h"  
+#include "gafuso.h"
 //----------------------------------------------------------
 void quit(char* msg){
 	fprintf(stderr,"%s\n", msg);
@@ -63,7 +63,8 @@ void GafusoSend(int socket){
 	sprintf(buffer_send,"%s%s",size,gafuso_send_buffer);
         send(socket, buffer_send, size_send_buffer+10, 0);
 }
-void GafusoBuffDel(void){
+
+void GafusoBuffDel(){
 	size_send_buffer = 0;
 	gafuso_send_buffer=NULL;
 }
