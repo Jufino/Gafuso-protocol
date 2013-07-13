@@ -8,7 +8,6 @@ void quit(char* msg){
 int GafusoCreate(int PORT){
   	int clientsock,serversock;
   	struct sockaddr_in server;	
-//  	if ((serversock = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP)) == -1)	quit("socket() failed");
 	if ((serversock = socket(AF_INET, SOCK_STREAM,0)) == -1)     quit("socket() failed");
 	memset(&server, 0, sizeof(server));                                     
 	server.sin_family = AF_INET;                                            
@@ -63,7 +62,7 @@ void GafusoSend(int socket){
 	sprintf(buffer_send,"%s%s",size,gafuso_send_buffer);
         send(socket, buffer_send, size_send_buffer+10, 0);
 }
-
+//--------------------------------------------------------------------
 void GafusoBuffDel(){
 	size_send_buffer = 0;
 	gafuso_send_buffer=NULL;
@@ -76,15 +75,10 @@ void GafusoSendImg(int socket, IplImage *img,int kvalita){
         param[1] = kvalita;
         Mat M = Mat(img);
         imencode(".jpg", M, buff, param);
-//        GafusoAdd((char *)(&buff[0]),buff.size());
         char size[12];
         sprintf(size,"%.10d",buff.size());
-//	char buffer_send[buff.size()+10];
-   ///     sprintf(buffer_send,"%s%s",size,reinterpret_cast<char*>(buff.data()));
 	send(socket, size, 10, 0);
 	send(socket, &buff[0], buff.size(), 0);
-//      GafusoSend(socket);
-    //    GafusoBuffDel();
         buff.clear();
 }
 //--------------------------------------------------------------------
@@ -96,6 +90,7 @@ void GafusoRecv(int socket){
 	size_recv_buffer = 0; 
 	recv(socket,gafuso_recv_buffer,atoi(size),0);
 }
+//--------------------------------------------------------------------
 char *GafusoLoad(char mode){
         char size[8];
         if (mode == 'f')        size_recv_buffer=0;
