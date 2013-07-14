@@ -10,11 +10,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
-#include <cv.h>
-#include <highgui.h>
-#include <cxcore.h>
 
-using namespace cv;
 //------------------------------------------------------------------------------------- 
 int GafusoCreate(int PORT);
 //-------------------------------------------------------------------------------------
@@ -31,7 +27,5 @@ void GafusoBuffDel();
 void GafusoRecv(int socket);
 //-------------------------------------------------------------------------------------
 char *GafusoLoad(char mode);
-//-------------------------------------------------------------------------------------
-void GafusoSendImg(int socket,IplImage *img, int kvalita);
 //-------------------------------------------------------------------------------------
 #endif

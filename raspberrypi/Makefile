@@ -1,19 +1,32 @@
 CPP=$(CROSS_COMPILE)g++ -Wall -g
-OFLAGS=`pkg-config --libs --cflags opencv`
+TARGET=gafuso
 
-all:gafuso send_gafuso recv_gafuso camera_gafuso
+exampleClient:exampleSendClient exampleRecvClient
+exampleServer:exampleSendServer exampleRecvServer
 
-send_gafuso:send_gafuso.cpp
-	$(CPP) send_gafuso.cpp gafuso.o -o send_gafuso $(OFLAGS)
-
-recv_gafuso:recv_gafuso.cpp
-	$(CPP) recv_gafuso.cpp gafuso.o -o recv_gafuso $(OFLAGS)
-
-camera_gafuso: camera_gafuso.cpp
-	$(CPP) camera_gafuso.cpp gafuso.o -o camera_gafuso $(OFLAGS)
-
-gafuso: gafuso.c
+gafuso:gafuso.c
 	$(CPP) -c gafuso.c $(OFLAGS)
 
-remove:
-	rm gafuso.o
+install: $(TARGET)
+	$(CROSS_COMPILE)ar rcs lib$(TARGET).a $(TARGET).o
+	install lib$(TARGET).a /usr/lib/lib$(TARGET).a
+	install *.h /usr/include/
+	rm lib$(TARGET).a
+	rm $(TARGET).o
+
+clean:
+	rm /usr/lib/lib$(TARGET).a
+	rm /usr/include/$(TARGET).h
+
+exampleSendServer:exampleSendServer.cpp
+	$(CPP) exampleSendServer.cpp -lgafuso -o exampleSendServer
+
+exampleSendClient:exampleSendClient.cpp
+	$(CPP) exampleSendClient.cpp -lgafuso -o exampleSendClient
+
+exampleRecvServer:exampleRecvServer.cpp
+	$(CPP) exampleRecvServer.cpp -lgafuso -o exampleRecvServer
+
+exampleRecvClient:exampleRecvClient.cpp
+	$(CPP) exampleRecvCli`:ent.cpp -lgafuso -o exampleRecvClient
+
