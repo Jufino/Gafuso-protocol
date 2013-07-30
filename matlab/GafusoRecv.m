@@ -8,6 +8,5 @@ function [] = GafusoRecv()
         dataRaw = fread(t, lengthInt);
     catch
     end
-    fwrite(t,'OK');
 end
 

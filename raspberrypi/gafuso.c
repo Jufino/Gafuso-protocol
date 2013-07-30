@@ -60,11 +60,7 @@ void GafusoSend(int socket){
 	sprintf(size,"%.10d",size_send_buffer);
 	char buffer_send[size_send_buffer+10];	
 	sprintf(buffer_send,"%s%s",size,gafuso_send_buffer);
-	char check[]="EM";
-	while(check != "OK"){
-        	send(socket, buffer_send, size_send_buffer+10, 0);
-		recv(socket,check,2,0);
-	}
+  send(socket, buffer_send, size_send_buffer+10, 0);
 }
 //--------------------------------------------------------------------
 void GafusoBuffDel(){
@@ -79,8 +75,6 @@ void GafusoRecv(int socket){
 	gafuso_recv_buffer=(char*)malloc(sizeof(char)*atoi(size));
 	size_recv_buffer = 0; 
 	recv(socket,gafuso_recv_buffer,atoi(size),0);
-	char data[] = "OK";
-	send(socket,data,2,0); //kontrola prijatia
 }
 //--------------------------------------------------------------------
 char *GafusoLoad(char mode){

@@ -1,12 +1,13 @@
-GafusoConnect('192.168.2.8',1213);
-%GafusoClose();
-%GafusoAdd('data',4);
-%GafusoSend();
-GafusoRecv();
-GafusoBuffDel();
-[data] = GafusoLoadAll()
-%GafusoConnect('192.168.2.8',1213);
-%GafusoAdd('100',3);
-%GafusoSend();
-%GafusoBuffDel();
+GafusoConnect('192.168.2.11',1213);
+GafusoAdd('next',4);
+Sensor1=[];
+Sensor2=[];
+for I=0:15:360
+    sprintf('Point robot to 0 degree %d',I);
+    waitforbuttonpress;
+    GafusoSend();
+    GafusoRecv();
+    Sensor1 = [Sensor1 GafusoLoad()];
+    Sensor2 = [Sensor2 GafusoLoad()];
+end
 GafusoClose();
